@@ -86,14 +86,14 @@ export function PostCard({ post }: PostCardProps) {
           {post.hearts}
         </span>
         <a
-          href="#"
+          aria-disabled="true"
           className="flex items-center gap-[7px] text-[14px] font-bold text-[#94887B]"
         >
           <CommentIcon />
           {post.comments}
         </a>
         <span className="flex-1" />
-        <a href="#" className="text-[14px] font-extrabold text-[#C5503A]">
+        <a aria-disabled="true" className="text-[14px] font-extrabold text-[#C5503A]">
           Editar
         </a>
       </footer>

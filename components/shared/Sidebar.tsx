@@ -24,7 +24,7 @@ function NavLink({ item }: { item: NavItem }) {
 
   return (
     <a
-      href="#"
+      aria-disabled="true"
       className={`flex items-center gap-3 rounded-[12px] px-3 py-[11px] text-[14.5px] ${
         item.active
           ? "bg-[#FBE3D8] font-extrabold text-[#D9583C]"
@@ -41,7 +41,7 @@ export function SidebarContent() {
   return (
     <>
       <a
-        href="#"
+        aria-disabled="true"
         className="flex items-center gap-[11px] px-2 pb-[22px] pt-1"
       >
         <div className="flex h-[38px] w-[38px] flex-none items-center justify-center rounded-[12px] bg-linear-155 from-[#F8C3A8] to-[#F2937A] text-white">
@@ -56,7 +56,7 @@ export function SidebarContent() {
       </a>
 
       <a
-        href="#"
+        aria-disabled="true"
         className="mb-[18px] flex w-full items-center justify-center gap-2 rounded-[14px] bg-linear-180 from-[#F4977E] to-[#EE8164] px-3 py-3 text-[14.5px] font-extrabold text-white shadow-[0_8px_18px_-8px_rgba(238,129,100,0.75)]"
       >
         <PlusIcon />
@@ -83,7 +83,7 @@ export function SidebarContent() {
             </div>
           </div>
           <a
-            href="#"
+            aria-disabled="true"
             title="Cerrar sesión"
             aria-label="Cerrar sesión"
             className="flex h-8 w-8 flex-none items-center justify-center rounded-[10px] bg-[#F6ECDF] text-[#94887B]"
