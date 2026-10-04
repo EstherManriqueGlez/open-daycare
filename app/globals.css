@@ -1,26 +1,30 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f6ecdf;
+  --foreground: #3f362e;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-nunito);
+  --font-mono: var(--font-nunito);
+  --font-fredoka: var(--font-fredoka);
+  --font-nunito: var(--font-nunito);
+  --color-daycare-bg: #f6ecdf;
+  --color-daycare-text: #3f362e;
+  --color-daycare-accent: #d9583c;
+  --color-daycare-accent-2: #f2937a;
+  --color-daycare-accent-3: #ee8164;
+  --color-staff-blue: #2e89a6;
+  --color-logro-green: #3e9b6c;
+  --color-anuncio-blue: #4e72c8;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-daycare-bg);
+  color: var(--color-daycare-text);
+  font-family: var(--font-nunito), system-ui, -apple-system, Segoe UI, Roboto,
+    Helvetica, Arial, sans-serif;
 }
