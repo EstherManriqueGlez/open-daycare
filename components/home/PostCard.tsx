@@ -85,17 +85,22 @@ export function PostCard({ post }: PostCardProps) {
           <HeartIcon />
           {post.hearts}
         </span>
-        <a
-          aria-disabled="true"
+        <button
+          type="button"
+          disabled
           className="flex items-center gap-[7px] text-[14px] font-bold text-[#94887B]"
         >
           <CommentIcon />
           {post.comments}
-        </a>
+        </button>
         <span className="flex-1" />
-        <a aria-disabled="true" className="text-[14px] font-extrabold text-[#C5503A]">
+        <button
+          type="button"
+          disabled
+          className="text-[14px] font-extrabold text-[#C5503A]"
+        >
           Editar
-        </a>
+        </button>
       </footer>
     </article>
   );

@@ -58,7 +58,7 @@ export interface Kid {
 export interface NavItem {
   label: string;
   icon: NavIcon;
-  active: boolean;
+  href?: string;
 }
 
 export interface SidebarUser {
@@ -74,10 +74,10 @@ export const sidebarUser: SidebarUser = {
 };
 
 export const navItems: NavItem[] = [
-  { label: "Feed", icon: "home", active: true },
-  { label: "Niños", icon: "kids", active: false },
-  { label: "Avisos", icon: "bell", active: false },
-  { label: "Mi cuenta", icon: "user", active: false },
+  { label: "Feed", icon: "home", href: "/" },
+  { label: "Niños", icon: "kids", href: "/kids" },
+  { label: "Avisos", icon: "bell" },
+  { label: "Mi cuenta", icon: "user" },
 ];
 
 export const feedSubtitle = "12 niños · martes 17 jun";
