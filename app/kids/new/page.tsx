@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { createLocalKid, saveLocalKid } from "@/app/_data/localKids";
 import type { NewKidForm } from "@/app/_data/localKids";
 
 const INITIAL_FORM: NewKidForm = {
@@ -25,6 +27,7 @@ function getFieldClassName(hasError: boolean) {
 }
 
 export default function NewKidPage() {
+  const router = useRouter();
   const [form, setForm] = useState<NewKidForm>(INITIAL_FORM);
   const [errors, setErrors] = useState<FormErrors>({});
 
@@ -64,7 +67,13 @@ export default function NewKidPage() {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    validateForm();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    saveLocalKid(createLocalKid(form));
+    router.push("/kids");
   }
 
   return (
