@@ -4,7 +4,7 @@ export function KidProfileActions() {
       type="button"
       disabled
       aria-disabled="true"
-      className="flex w-full cursor-not-allowed items-center justify-center gap-[9px] rounded-[14px] bg-[#3F362E] p-[13px] text-[15px] font-extrabold text-white opacity-70"
+      className="flex w-full cursor-not-allowed items-center justify-center gap-[9px] rounded-[14px] bg-[#3F362E] p-[13px] text-[15px] font-extrabold text-white"
     >
       <svg
         width="18"

@@ -48,7 +48,7 @@ export function KidProfileHeader({ kid }: KidProfileHeaderProps) {
           type="button"
           disabled
           aria-disabled="true"
-          className="cursor-not-allowed rounded-[12px] border-[1.5px] border-[#ECE0D0] bg-[#FFFDF9] px-4 py-[9px] text-[14px] font-bold text-[#6E6359] opacity-70 max-[420px]:w-full"
+          className="cursor-not-allowed rounded-[12px] border-[1.5px] border-[#ECE0D0] bg-[#FFFDF9] px-4 py-[9px] text-[14px] font-bold text-[#6E6359] max-[420px]:w-full"
         >
           Editar
         </button>
