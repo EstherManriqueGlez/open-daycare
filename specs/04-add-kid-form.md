@@ -1,6 +1,6 @@
 # SPEC 04 — Add kid form
 
-> **Estado:** Approved
+> **Estado:** Implemented
 > **Depende de:** SPEC 02
 > **Fecha:** 2026-10-05
 > **Objetivo:** Implementar la pantalla `/kids/new` para crear un niño desde un formulario fiel a `references/pantallas/agregar-nino.dc.html` y mostrarlo después en `/kids` usando persistencia local.
@@ -86,22 +86,22 @@ Convenciones:
 
 ## Acceptance criteria
 
-- [ ] `/kids/new` renderiza una tarjeta flotante centrada horizontalmente y visualmente fiel a `references/pantallas/agregar-nino.dc.html`.
-- [ ] La pantalla usa fondo cálido, tarjeta `#FBF4EC`, bordes redondeados, sombra, tipografía Fredoka/Nunito y spacing equivalente a la referencia.
-- [ ] `Cancelar` navega a `/kids` sin guardar datos.
-- [ ] `Guardar` valida `Nombre completo`, `Fecha de nacimiento` y `Sala` antes de guardar.
-- [ ] `Fecha de nacimiento` muestra error si no cumple el formato básico `dd/mm/aaaa`.
-- [ ] `Sala` permite seleccionar exactamente una opción entre `Soles`, `Estrellas` y `Lunas`.
-- [ ] `Alergias (etiquetas)` y `Notas médicas` son opcionales y se guardan si el usuario los completa.
-- [ ] Al guardar datos válidos, se crea un `LocalKid` en `localStorage` bajo `open-daycare:kids:v1`.
-- [ ] Después de guardar, la app navega a `/kids`.
-- [ ] El niño creado aparece en `/kids` junto con los niños mock existentes.
-- [ ] La card del niño creado localmente navega a `/kids/[id]`.
-- [ ] `/kids/[id]` renderiza un perfil básico para un niño creado localmente usando nombre, sala, fecha de nacimiento, alergias y notas médicas.
-- [ ] El botón `Editar` de `/kids/[id]` no se cambia para apuntar a `/kids/new`.
-- [ ] En mobile, el formulario no genera overflow horizontal y conserva jerarquía visual legible.
-- [ ] `npm run lint` termina sin errores.
-- [ ] `npx tsc --noEmit` termina sin errores.
+- [x] `/kids/new` renderiza una tarjeta flotante centrada horizontalmente y visualmente fiel a `references/pantallas/agregar-nino.dc.html`.
+- [x] La pantalla usa fondo cálido, tarjeta `#FBF4EC`, bordes redondeados, sombra, tipografía Fredoka/Nunito y spacing equivalente a la referencia.
+- [x] `Cancelar` navega a `/kids` sin guardar datos.
+- [x] `Guardar` valida `Nombre completo`, `Fecha de nacimiento` y `Sala` antes de guardar.
+- [x] `Fecha de nacimiento` muestra error si no cumple el formato básico `dd/mm/aaaa`.
+- [x] `Sala` permite seleccionar exactamente una opción entre `Soles`, `Estrellas` y `Lunas`.
+- [x] `Alergias (etiquetas)` y `Notas médicas` son opcionales y se guardan si el usuario los completa.
+- [x] Al guardar datos válidos, se crea un `LocalKid` en `localStorage` bajo `open-daycare:kids:v1`.
+- [x] Después de guardar, la app navega a `/kids`.
+- [x] El niño creado aparece en `/kids` junto con los niños mock existentes.
+- [x] La card del niño creado localmente navega a `/kids/[id]`.
+- [x] `/kids/[id]` renderiza un perfil básico para un niño creado localmente usando nombre, sala, fecha de nacimiento, alergias y notas médicas.
+- [x] El botón `Editar` de `/kids/[id]` no se cambia para apuntar a `/kids/new`.
+- [x] En mobile, el formulario no genera overflow horizontal y conserva jerarquía visual legible.
+- [x] `npm run lint` termina sin errores.
+- [x] `npx tsc --noEmit` termina sin errores.
 
 ## Decisions
 
