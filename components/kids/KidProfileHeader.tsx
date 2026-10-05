@@ -37,7 +37,7 @@ export function KidProfileHeader({ kid }: KidProfileHeaderProps) {
           {kid.initial}
         </div>
         <div className="min-w-0 flex-1">
-          <h1 className="m-0 truncate font-fredoka text-[28px] leading-tight font-semibold text-[#3F362E]">
+          <h1 className="m-0 font-fredoka text-[28px] leading-tight font-semibold text-[#3F362E]">
             {kid.name}
           </h1>
           <p className="mt-[3px] text-[15px] text-[#94887B]">

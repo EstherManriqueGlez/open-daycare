@@ -24,14 +24,14 @@ export default async function KidProfilePage({ params }: PageProps<"/kids/[id]">
 
       <main className="h-screen min-w-0 flex-1 overflow-y-auto">
         <div className="mx-auto w-full max-w-[820px] px-5 pt-20 pb-20 md:px-10 md:pt-[34px]">
-          <div className="flex flex-col gap-[26px] md:flex-row md:items-start">
+          <div className="flex flex-col gap-[26px] lg:flex-row lg:items-start">
             <div className="flex min-w-0 flex-1 flex-col gap-[18px]">
               <KidProfileHeader kid={kid} />
               {kid.notes ? <KidNotesAlert notes={kid.notes} /> : null}
               <KidInfoCard kid={kid} />
             </div>
 
-            <div className="flex w-full flex-none flex-col gap-[14px] md:w-[300px]">
+            <div className="flex w-full flex-none flex-col gap-[14px] lg:w-[300px]">
               <KidProfileActions />
               <LinkedParentsCard parents={kid.linkedParents} />
             </div>

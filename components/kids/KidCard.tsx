@@ -25,10 +25,10 @@ export function KidCard({ kid }: KidCardProps) {
       </div>
 
       <div className="min-w-0 flex-1">
-        <div className="truncate font-fredoka text-[16px] font-semibold text-[#3F362E]">
+        <div className="font-fredoka text-[16px] leading-tight font-semibold text-[#3F362E]">
           {kid.name}
         </div>
-        <div className="truncate text-[13px] text-[#A89A8B]">
+        <div className="text-[13px] leading-tight text-[#A89A8B]">
           {kid.ageLabel} · {kid.parentSummary}
         </div>
       </div>

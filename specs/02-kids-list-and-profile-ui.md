@@ -86,16 +86,16 @@ Convenciones:
 
 ## Acceptance criteria
 
-- [ ] `/kids` renderiza el listado `Niños` con encabezado, buscador visual, sección `SALA SOLES` y 8 niños mock.
-- [ ] `/kids` usa cards visualmente equivalentes a `references/pantallas/ninos.dc.html`.
-- [ ] Cada card de niño navega a `/kids/[id]`.
-- [ ] `/kids/[id]` renderiza el perfil con botón `Volver a Niños`, encabezado, alerta de alergias/notas, datos del niño, acción `Resumen del día` y padres vinculados.
-- [ ] El perfil de Mateo coincide visualmente con `references/pantallas/perfil-nino.dc.html`.
-- [ ] El menú lateral y móvil marcan `Niños` como activo en `/kids` y `/kids/[id]`.
-- [ ] Los botones fuera de alcance permanecen visibles pero no crean rutas nuevas ni formularios.
-- [ ] En mobile, el listado se muestra en una columna y el perfil se apila sin overflow horizontal.
-- [ ] `npm run lint` termina sin errores.
-- [ ] `npx tsc --noEmit` termina sin errores.
+- [x] `/kids` renderiza el listado `Niños` con encabezado, buscador visual, sección `SALA SOLES` y 8 niños mock.
+- [x] `/kids` usa cards visualmente equivalentes a `references/pantallas/ninos.dc.html`.
+- [x] Cada card de niño navega a `/kids/[id]`.
+- [x] `/kids/[id]` renderiza el perfil con botón `Volver a Niños`, encabezado, alerta de alergias/notas, datos del niño, acción `Resumen del día` y padres vinculados.
+- [x] El perfil de Mateo coincide visualmente con `references/pantallas/perfil-nino.dc.html`.
+- [x] El menú lateral y móvil marcan `Niños` como activo en `/kids` y `/kids/[id]`.
+- [x] Los botones fuera de alcance permanecen visibles pero no crean rutas nuevas ni formularios.
+- [x] En mobile, el listado se muestra en una columna y el perfil se apila sin overflow horizontal.
+- [x] `npm run lint` termina sin errores.
+- [x] `npx tsc --noEmit` termina sin errores.
 
 ## Decisions
 
