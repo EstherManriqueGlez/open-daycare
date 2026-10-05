@@ -17,7 +17,7 @@ export function KidsSearchBox() {
       </svg>
       <input
         type="search"
-        placeholder="Buscar niño..."
+        placeholder="Buscar niño…"
         disabled
         aria-label="Buscar niño"
         className="min-w-0 flex-1 border-0 bg-transparent text-[15px] text-[#3F362E] placeholder:text-[#B6A99B] disabled:opacity-100"

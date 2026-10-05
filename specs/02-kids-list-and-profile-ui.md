@@ -1,6 +1,6 @@
 # SPEC 02 — Kids list and profile UI
 
-> **Estado:** Approved
+> **Estado:** Implemented
 > **Depende de:** SPEC 01
 > **Fecha:** 2026-10-04
 > **Objetivo:** Implementar las pantallas `/kids` y `/kids/[id]` con interfaces y componentes fieles a `references/pantallas/ninos.dc.html` y `references/pantallas/perfil-nino.dc.html`.
@@ -96,6 +96,12 @@ Convenciones:
 - [x] En mobile, el listado se muestra en una columna y el perfil se apila sin overflow horizontal.
 - [x] `npm run lint` termina sin errores.
 - [x] `npx tsc --noEmit` termina sin errores.
+
+### Notas de verificación
+
+- Los checks se ejecutaron sobre `next dev` (Next.js 16.3.8). `npx tsc --noEmit` requiere que `.next/types` ya exista (se genera con `npm run dev` o `npm run build`); con `node_modules` y `.next` sin generar el comando falla con `Cannot find name 'PageProps'`.
+- `Agregar niño` enlaza a `/kids/new`, ruta que pertenece a SPEC 04 y no a esta spec; los botones fuera de alcance de esta spec (`Editar`, `Resumen del día`, `Vincular otro padre`, `Nueva publicación`, `Cerrar sesión`, `Avisos`, `Mi cuenta`) siguen siendo `button disabled` sin ruta ni formulario.
+- La alerta de alergias/notas y las filas de datos del perfil se renderizan de forma condicional: los mock sin `notes` muestran el perfil sin alerta, manteniendo la estructura del diseño de `perfil-nino.dc.html`.
 
 ## Decisions
 

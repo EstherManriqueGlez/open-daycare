@@ -44,7 +44,7 @@ export function LinkedParentsCard({ parents }: LinkedParentsCardProps) {
           type="button"
           disabled
           aria-disabled="true"
-          className="flex cursor-not-allowed items-center gap-3 pt-2 text-left opacity-70"
+          className="flex cursor-not-allowed items-center gap-3 pt-2 text-left"
         >
           <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full border-[1.5px] border-dashed border-[#D8CBBA] text-[#B0A290]">
             <svg
