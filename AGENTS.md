@@ -15,7 +15,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Stack notes
 
-- Next.js 16.2.10 (App Router) + React 19.2.4. TypeScript strict, `noEmit`, `moduleResolution: bundler`.
+- Next.js 16.3.8 (App Router) + React 19.2.8. TypeScript strict, `noEmit`, `moduleResolution: bundler`.
 - Path alias `@/*` maps to the repo root (`./*`), not `src/`.
 - Tailwind CSS v4: configured inline via `@import "tailwindcss"` + `@theme` in `app/globals.css` and the `@tailwindcss/postcss` plugin. There is **no** `tailwind.config.ts`; do not create one.
 
@@ -32,13 +32,13 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Agents
 
-- `spec-verifier`: Verifies acceptance criteria of a spec file. Reviews implementation against each criterion, fixes code/spec issues found, and marks checkboxes. Uses Playwright MCP with vision to compare screenshots against references, and Context7 MCP to validate Next.js best practices.
+- `spec-verifier` (`.opencode/agent/spec-verifier.md`): Verifies acceptance criteria of a spec file after implementation. Reviews each criterion, runs the relevant checks, fixes code/spec issues when possible, marks checkboxes in the spec, and reports pass/fail status. Uses Playwright MCP with vision for UI/reference screenshot comparisons and Context7 MCP for current Next.js best practices.
 
-## Spec Driven Development - Skills
+## Spec Driven Development - Skills and Commands
 
-- /spec Usaremos esta habilidad para crear las especificaciones.
-- /spec-impl Usaremos esta skill para hacer las implementaciones.
-- /verify-spec Usaremos este comando para verificar los criterios de aceptación de una spec.
+- `/spec`: use this skill to create or refine specs in `specs/` before writing code.
+- `/spec-impl`: use this skill to implement an approved spec step by step. It validates that the spec status means `Approved`/`Aprobado`, creates or switches to the `spec-NN-slug` branch according to `specs/spec-config.yml`, and pauses between implementation steps.
+- `/verify-spec` (`.opencode/command/verify-spec.md`): use this command after implementation to invoke `spec-verifier`. It accepts a spec number, slug, or path, verifies the acceptance criteria, fixes issues found during verification, updates the checkboxes, and reports the result.
 
 ## Reglas de código
 

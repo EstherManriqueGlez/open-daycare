@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Open Daycare
 
-## Getting Started
+Spanish-language daycare management app for staff and family/parent flows. The real UI is implemented from the design references in `references/pantallas/` and rendered previews in `references/screenshots/`.
 
-First, run the development server:
+## Stack
+
+- Next.js 16.3.8 App Router
+- React 19.2.8
+- TypeScript strict
+- Tailwind CSS v4 via `@import "tailwindcss"` and `@theme` in `app/globals.css`
+
+## Development
+
+Install dependencies and run the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Useful commands:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run lint
+npx tsc --noEmit
+npm run build
+```
 
-## Learn More
+There is no configured test runner yet.
 
-To learn more about Next.js, take a look at the following resources:
+## Design References
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Screen catalog: `references/pantallas/index.dc.html`
+- Source screens: `references/pantallas/*.dc.html`
+- Rendered previews: `references/screenshots/*.png`
+- Visual direction: Fredoka headings, Nunito body, warm background `#f6ecdf`, accent `#d9583c`/`#f2937a`, staff blue `#2e89a6`, family purple `#7b5fc0`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Spec Workflow
 
-## Deploy on Vercel
+- `/spec`: create or refine a spec in `specs/`.
+- `/spec-impl`: implement an approved spec step by step.
+- `/verify-spec`: verify acceptance criteria after implementation with the `spec-verifier` agent. It checks criteria, fixes issues when possible, updates spec checkboxes, and reports the final status.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Branch creation for `/spec-impl` is controlled by `specs/spec-config.yml`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Opencode Project Files
+
+- Project instructions: `AGENTS.md`
+- Spec verifier agent: `.opencode/agent/spec-verifier.md`
+- Verify command: `.opencode/command/verify-spec.md`
+- Spec skills: `.agents/skills/spec/` and `.agents/skills/spec-impl/`
+
+After changing opencode config, agent, command, or skill files, restart opencode so the new configuration is loaded.
