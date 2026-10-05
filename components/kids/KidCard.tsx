@@ -34,9 +34,7 @@ export function KidCard({ kid }: KidCardProps) {
       </div>
 
       {kid.badge ? (
-        <span
-          className={`flex-none rounded-full px-[9px] py-[5px] text-[11px] font-extrabold ${BADGE_CLASSES[kid.badge.variant]}`}
-        >
+        <span className={`flex-none rounded-full px-[9px] py-[5px] text-[11px] font-extrabold max-[420px]:hidden ${BADGE_CLASSES[kid.badge.variant]}`}>
           {kid.badge.label}
         </span>
       ) : (

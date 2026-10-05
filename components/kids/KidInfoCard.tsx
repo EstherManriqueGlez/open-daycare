@@ -16,7 +16,7 @@ export function KidInfoCard({ kid }: KidInfoCardProps) {
       {rows.map((row, index) => (
         <div
           key={row.label}
-          className={`flex justify-between gap-4 px-[18px] py-[15px] text-[14.5px] ${
+          className={`flex flex-col gap-1 px-[18px] py-[15px] text-[14.5px] min-[420px]:flex-row min-[420px]:justify-between min-[420px]:gap-4 ${
             index < rows.length - 1 ? "border-b border-[#F0E6D8]" : ""
           }`}
         >

@@ -29,7 +29,7 @@ export function KidProfileHeader({ kid }: KidProfileHeaderProps) {
         Volver a Niños
       </Link>
 
-      <div className="flex items-center gap-[18px]">
+      <div className="flex flex-wrap items-center gap-[18px]">
         <div
           className="flex h-[84px] w-[84px] flex-none items-center justify-center rounded-full font-fredoka text-[34px] font-semibold"
           style={{ backgroundColor: kid.avatarBg, color: kid.avatarColor }}
@@ -48,7 +48,7 @@ export function KidProfileHeader({ kid }: KidProfileHeaderProps) {
           type="button"
           disabled
           aria-disabled="true"
-          className="cursor-not-allowed rounded-[12px] border-[1.5px] border-[#ECE0D0] bg-[#FFFDF9] px-4 py-[9px] text-[14px] font-bold text-[#6E6359] opacity-70"
+          className="cursor-not-allowed rounded-[12px] border-[1.5px] border-[#ECE0D0] bg-[#FFFDF9] px-4 py-[9px] text-[14px] font-bold text-[#6E6359] opacity-70 max-[420px]:w-full"
         >
           Editar
         </button>

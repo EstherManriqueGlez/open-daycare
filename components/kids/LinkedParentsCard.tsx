@@ -17,7 +17,7 @@ export function LinkedParentsCard({ parents }: LinkedParentsCardProps) {
       </div>
       <div className="flex flex-col gap-[14px]">
         {parents.map((parent) => (
-          <div key={parent.id} className="flex items-center gap-3">
+          <div key={parent.id} className="flex flex-wrap items-center gap-3">
             <div
               className="flex h-10 w-10 flex-none items-center justify-center rounded-full font-fredoka text-[16px] font-semibold text-white"
               style={{ backgroundColor: parent.avatarBg }}
