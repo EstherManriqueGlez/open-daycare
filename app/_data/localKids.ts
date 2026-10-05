@@ -121,13 +121,15 @@ export function readLocalKids(): LocalKid[] {
     return [];
   }
 
+  return parseLocalKidsStorageValue(window.localStorage.getItem(LOCAL_KIDS_STORAGE_KEY));
+}
+
+export function parseLocalKidsStorageValue(storedValue: string | null): LocalKid[] {
+  if (!storedValue) {
+    return [];
+  }
+
   try {
-    const storedValue = window.localStorage.getItem(LOCAL_KIDS_STORAGE_KEY);
-
-    if (!storedValue) {
-      return [];
-    }
-
     const parsedValue: unknown = JSON.parse(storedValue);
 
     if (!Array.isArray(parsedValue)) {

@@ -30,6 +30,7 @@ export default function NewKidPage() {
   const router = useRouter();
   const [form, setForm] = useState<NewKidForm>(INITIAL_FORM);
   const [errors, setErrors] = useState<FormErrors>({});
+  const hasErrors = Object.values(errors).some(Boolean);
 
   function updateField(field: keyof NewKidForm, value: string) {
     setForm((currentForm) => ({
@@ -77,23 +78,32 @@ export default function NewKidPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F6ECDF] px-6 py-10 text-[#3F362E] sm:px-8">
+    <main className="min-h-screen bg-[#F6ECDF] px-4 py-6 text-[#3F362E] sm:px-8 sm:py-10">
       <section className="mx-auto w-full max-w-[520px] overflow-hidden rounded-[24px] border border-[#ECE0D0] bg-[#FBF4EC] shadow-[0_20px_50px_-24px_rgba(63,54,46,0.35)]">
-        <header className="flex items-center justify-between border-b border-[#ECE0D0] px-[26px] py-5">
-          <Link href="/kids" className="text-[15px] font-bold text-[#94887B]">
+        <header className="flex items-center justify-between gap-3 border-b border-[#ECE0D0] px-5 py-5 min-[420px]:px-[26px]">
+          <Link href="/kids" className="whitespace-nowrap text-[15px] font-bold text-[#94887B]">
             Cancelar
           </Link>
 
-          <h1 className="font-fredoka text-[18px] leading-none font-semibold text-[#3F362E]">
+          <h1 className="min-w-0 text-center font-fredoka text-[18px] leading-none font-semibold text-[#3F362E]">
             Agregar niño
           </h1>
 
-          <button type="submit" form="newKidForm" className="text-[15px] font-extrabold text-[#D9583C]">
+          <button type="submit" form="newKidForm" className="whitespace-nowrap text-[15px] font-extrabold text-[#D9583C]">
             Guardar
           </button>
         </header>
 
-        <form id="newKidForm" className="px-[26px] py-6" noValidate onSubmit={handleSubmit}>
+        <form id="newKidForm" className="px-5 py-6 min-[420px]:px-[26px]" noValidate onSubmit={handleSubmit}>
+          {hasErrors ? (
+            <div
+              role="alert"
+              className="mb-[18px] rounded-[14px] border border-[#F4B5A6] bg-[#FDE3DC] px-4 py-3 text-[13px] font-bold text-[#B94734]"
+            >
+              Revisa los campos marcados antes de guardar.
+            </div>
+          ) : null}
+
           <div className="mb-[18px]">
             <label htmlFor="fullName" className="mb-2 block text-[12px] font-extrabold tracking-[0.7px] text-[#94887B]">
               NOMBRE COMPLETO
@@ -116,7 +126,7 @@ export default function NewKidPage() {
           </div>
 
           <div className="mb-[18px] flex flex-col gap-[14px] min-[520px]:flex-row">
-            <div className="flex-1">
+            <div className="min-w-0 flex-1">
               <label htmlFor="birthDate" className="mb-2 block text-[12px] font-extrabold tracking-[0.7px] text-[#94887B]">
                 FECHA DE NACIMIENTO
               </label>
@@ -138,7 +148,7 @@ export default function NewKidPage() {
               ) : null}
             </div>
 
-            <div className="flex-1">
+            <div className="min-w-0 flex-1">
               <label htmlFor="room" className="mb-2 block text-[12px] font-extrabold tracking-[0.7px] text-[#94887B]">
                 SALA
               </label>
@@ -149,7 +159,7 @@ export default function NewKidPage() {
                 onChange={(event) => updateField("room", event.target.value)}
                 aria-invalid={Boolean(errors.room)}
                 aria-describedby={errors.room ? "roomError" : undefined}
-                className={`${getFieldClassName(Boolean(errors.room))} font-bold`}
+                className={`${getFieldClassName(Boolean(errors.room))} appearance-none bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%20stroke%3D%22%23B0A290%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E')] bg-[length:16px_16px] bg-[right_18px_center] bg-no-repeat pr-12 font-bold`}
               >
                 {ROOM_OPTIONS.map((room) => (
                   <option key={room} value={room}>

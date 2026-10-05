@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useSyncExternalStore } from "react";
 
-import { LOCAL_KIDS_STORAGE_KEY, mapLocalKidToKid, readLocalKids } from "@/app/_data/localKids";
+import { LOCAL_KIDS_STORAGE_KEY, mapLocalKidToKid, parseLocalKidsStorageValue } from "@/app/_data/localKids";
 import { KidInfoCard } from "@/components/kids/KidInfoCard";
 import { KidNotesAlert } from "@/components/kids/KidNotesAlert";
 import { KidProfileActions } from "@/components/kids/KidProfileActions";
@@ -35,9 +35,9 @@ function subscribeToLocalKids(onStoreChange: () => void) {
 }
 
 export function KidProfileLocalResolver({ id }: KidProfileLocalResolverProps) {
-  useSyncExternalStore(subscribeToLocalKids, getLocalKidsSnapshot, () => "");
+  const localKidsSnapshot = useSyncExternalStore(subscribeToLocalKids, getLocalKidsSnapshot, () => "");
 
-  const localKid = readLocalKids().find((kid) => kid.id === id);
+  const localKid = parseLocalKidsStorageValue(localKidsSnapshot).find((kid) => kid.id === id);
 
   if (!localKid) {
     return (

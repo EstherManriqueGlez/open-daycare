@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 
-import { LOCAL_KIDS_STORAGE_KEY, mapLocalKidToKid, readLocalKids } from "@/app/_data/localKids";
+import { LOCAL_KIDS_STORAGE_KEY, mapLocalKidToKid, parseLocalKidsStorageValue } from "@/app/_data/localKids";
 import type { Kid } from "@/app/_data/mock";
 import { KidsHeader } from "@/components/kids/KidsHeader";
 import { KidsList } from "@/components/kids/KidsList";
@@ -34,9 +34,9 @@ function subscribeToLocalKids(onStoreChange: () => void) {
 }
 
 export function KidsManagement({ initialKids }: KidsManagementProps) {
-  useSyncExternalStore(subscribeToLocalKids, getLocalKidsSnapshot, () => "");
+  const localKidsSnapshot = useSyncExternalStore(subscribeToLocalKids, getLocalKidsSnapshot, () => "");
 
-  const localKids = readLocalKids().map(mapLocalKidToKid);
+  const localKids = parseLocalKidsStorageValue(localKidsSnapshot).map(mapLocalKidToKid);
   const displayKids = [...localKids, ...initialKids];
 
   return (
