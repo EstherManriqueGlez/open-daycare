@@ -14,15 +14,57 @@ const INITIAL_FORM: NewKidForm = {
 };
 
 const ROOM_OPTIONS = ["Soles", "Estrellas", "Lunas"] as const;
+const DATE_FORMAT_PATTERN = /^\d{2}\/\d{2}\/\d{4}$/;
+
+type FormErrors = Partial<Record<keyof NewKidForm, string>>;
+
+function getFieldClassName(hasError: boolean) {
+  return `w-full rounded-[14px] border-[1.5px] bg-white px-4 py-[13px] text-[15px] text-[#3F362E] placeholder:text-[#B6A99B] focus:outline-none ${
+    hasError ? "border-[#D9583C] focus:border-[#D9583C]" : "border-[#EADFD0] focus:border-[#F2937A]"
+  }`;
+}
 
 export default function NewKidPage() {
   const [form, setForm] = useState<NewKidForm>(INITIAL_FORM);
+  const [errors, setErrors] = useState<FormErrors>({});
 
   function updateField(field: keyof NewKidForm, value: string) {
     setForm((currentForm) => ({
       ...currentForm,
       [field]: value,
     }));
+
+    setErrors((currentErrors) => ({
+      ...currentErrors,
+      [field]: undefined,
+    }));
+  }
+
+  function validateForm() {
+    const nextErrors: FormErrors = {};
+
+    if (!form.fullName.trim()) {
+      nextErrors.fullName = "Ingresa el nombre completo.";
+    }
+
+    if (!form.birthDate.trim()) {
+      nextErrors.birthDate = "Ingresa la fecha de nacimiento.";
+    } else if (!DATE_FORMAT_PATTERN.test(form.birthDate.trim())) {
+      nextErrors.birthDate = "Usa el formato dd/mm/aaaa.";
+    }
+
+    if (!form.room) {
+      nextErrors.room = "Selecciona una sala.";
+    }
+
+    setErrors(nextErrors);
+
+    return Object.keys(nextErrors).length === 0;
+  }
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    validateForm();
   }
 
   return (
@@ -37,12 +79,12 @@ export default function NewKidPage() {
             Agregar niño
           </h1>
 
-          <button type="button" className="text-[15px] font-extrabold text-[#D9583C]">
+          <button type="submit" form="newKidForm" className="text-[15px] font-extrabold text-[#D9583C]">
             Guardar
           </button>
         </header>
 
-        <form className="px-[26px] py-6">
+        <form id="newKidForm" className="px-[26px] py-6" noValidate onSubmit={handleSubmit}>
           <div className="mb-[18px]">
             <label htmlFor="fullName" className="mb-2 block text-[12px] font-extrabold tracking-[0.7px] text-[#94887B]">
               NOMBRE COMPLETO
@@ -53,8 +95,15 @@ export default function NewKidPage() {
               value={form.fullName}
               onChange={(event) => updateField("fullName", event.target.value)}
               placeholder="Ej. Martina López"
-              className="w-full rounded-[14px] border-[1.5px] border-[#EADFD0] bg-white px-4 py-[13px] text-[15px] text-[#3F362E] placeholder:text-[#B6A99B] focus:border-[#F2937A] focus:outline-none"
+              aria-invalid={Boolean(errors.fullName)}
+              aria-describedby={errors.fullName ? "fullNameError" : undefined}
+              className={getFieldClassName(Boolean(errors.fullName))}
             />
+            {errors.fullName ? (
+              <p id="fullNameError" className="mt-2 text-[12px] font-bold text-[#D9583C]">
+                {errors.fullName}
+              </p>
+            ) : null}
           </div>
 
           <div className="mb-[18px] flex flex-col gap-[14px] min-[520px]:flex-row">
@@ -69,8 +118,15 @@ export default function NewKidPage() {
                 onChange={(event) => updateField("birthDate", event.target.value)}
                 inputMode="numeric"
                 placeholder="dd/mm/aaaa"
-                className="w-full rounded-[14px] border-[1.5px] border-[#EADFD0] bg-white px-4 py-[13px] text-[15px] text-[#3F362E] placeholder:text-[#B6A99B] focus:border-[#F2937A] focus:outline-none"
+                aria-invalid={Boolean(errors.birthDate)}
+                aria-describedby={errors.birthDate ? "birthDateError" : undefined}
+                className={getFieldClassName(Boolean(errors.birthDate))}
               />
+              {errors.birthDate ? (
+                <p id="birthDateError" className="mt-2 text-[12px] font-bold text-[#D9583C]">
+                  {errors.birthDate}
+                </p>
+              ) : null}
             </div>
 
             <div className="flex-1">
@@ -82,7 +138,9 @@ export default function NewKidPage() {
                 name="room"
                 value={form.room}
                 onChange={(event) => updateField("room", event.target.value)}
-                className="w-full rounded-[14px] border-[1.5px] border-[#EADFD0] bg-white px-4 py-[13px] text-[15px] font-bold text-[#3F362E] focus:border-[#F2937A] focus:outline-none"
+                aria-invalid={Boolean(errors.room)}
+                aria-describedby={errors.room ? "roomError" : undefined}
+                className={`${getFieldClassName(Boolean(errors.room))} font-bold`}
               >
                 {ROOM_OPTIONS.map((room) => (
                   <option key={room} value={room}>
@@ -90,6 +148,11 @@ export default function NewKidPage() {
                   </option>
                 ))}
               </select>
+              {errors.room ? (
+                <p id="roomError" className="mt-2 text-[12px] font-bold text-[#D9583C]">
+                  {errors.room}
+                </p>
+              ) : null}
             </div>
           </div>
 
@@ -103,7 +166,7 @@ export default function NewKidPage() {
               value={form.allergies}
               onChange={(event) => updateField("allergies", event.target.value)}
               placeholder="Ej. Maní, Lactosa"
-              className="w-full rounded-[14px] border-[1.5px] border-[#EADFD0] bg-white px-4 py-[13px] text-[15px] text-[#3F362E] placeholder:text-[#B6A99B] focus:border-[#F2937A] focus:outline-none"
+              className={getFieldClassName(false)}
             />
           </div>
 
@@ -117,7 +180,7 @@ export default function NewKidPage() {
               value={form.medicalNotes}
               onChange={(event) => updateField("medicalNotes", event.target.value)}
               placeholder="Indicaciones, medicación, contactos..."
-              className="min-h-[90px] w-full resize-y rounded-[14px] border-[1.5px] border-[#EADFD0] bg-white px-4 py-[13px] text-[15px] leading-normal text-[#3F362E] placeholder:text-[#B6A99B] focus:border-[#F2937A] focus:outline-none"
+              className={`${getFieldClassName(false)} min-h-[90px] resize-y leading-normal`}
             />
           </div>
         </form>
