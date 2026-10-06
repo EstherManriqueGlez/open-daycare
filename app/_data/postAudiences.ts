@@ -17,32 +17,39 @@ function mapKidToAudienceOption(kid: Kid): NewPostAudienceOption {
     id: kid.id,
     label: kid.name.split(" ")[0] || kid.name,
     audience: {
-      kind: "kid",
-      kidId: kid.id,
-      kidName: kid.name,
-      kidInitial: kid.initial,
-      avatarBg: kid.avatarBg,
-      avatarColor: kid.avatarColor,
+      kind: "kids",
+      kids: [
+        {
+          kidId: kid.id,
+          kidName: kid.name,
+          kidInitial: kid.initial,
+          avatarBg: kid.avatarBg,
+          avatarColor: kid.avatarColor,
+        },
+      ],
     },
   };
 }
 
-function getPriorityMockKids() {
-  return PRIORITY_KID_IDS.map((kidId) => kids.find((kid) => kid.id === kidId)).filter(
+function getOrderedMockKids() {
+  const priorityKids = PRIORITY_KID_IDS.map((kidId) => kids.find((kid) => kid.id === kidId)).filter(
     (kid): kid is Kid => Boolean(kid),
   );
+  const priorityIds = new Set(priorityKids.map((kid) => kid.id));
+
+  return [...priorityKids, ...kids.filter((kid) => !priorityIds.has(kid.id))];
 }
 
 export function buildNewPostAudienceOptions(localKids: LocalKid[] = []): NewPostAudienceOption[] {
-  const priorityOptions = getPriorityMockKids().map(mapKidToAudienceOption);
-  const priorityIds = new Set(priorityOptions.map((option) => option.id));
+  const mockOptions = getOrderedMockKids().map(mapKidToAudienceOption);
+  const mockIds = new Set(mockOptions.map((option) => option.id));
   const localOptions = localKids
     .map(mapLocalKidToKid)
-    .filter((kid) => !priorityIds.has(kid.id))
+    .filter((kid) => !mockIds.has(kid.id))
     .map(mapKidToAudienceOption);
 
   return [
-    ...priorityOptions,
+    ...mockOptions,
     ...localOptions,
     {
       id: "room",

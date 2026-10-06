@@ -91,20 +91,22 @@ function subscribeToLocalKids(onStoreChange: () => void) {
   return () => window.removeEventListener("storage", handleStorage);
 }
 
-function isSameAudience(firstAudience: NewPostAudience, secondAudience: NewPostAudience) {
-  if (firstAudience.kind !== secondAudience.kind) {
+function getSingleKidFromOption(option: NewPostAudienceOption) {
+  return option.audience.kind === "kids" ? option.audience.kids[0] : undefined;
+}
+
+function isAudienceOptionSelected(option: NewPostAudienceOption, selectedAudience: NewPostAudience) {
+  if (option.audience.kind === "room") {
+    return selectedAudience.kind === "room";
+  }
+
+  if (selectedAudience.kind !== "kids") {
     return false;
   }
 
-  if (firstAudience.kind === "room" && secondAudience.kind === "room") {
-    return firstAudience.label === secondAudience.label;
-  }
+  const kid = getSingleKidFromOption(option);
 
-  if (firstAudience.kind === "kid" && secondAudience.kind === "kid") {
-    return firstAudience.kidId === secondAudience.kidId;
-  }
-
-  return false;
+  return Boolean(kid && selectedAudience.kids.some((selectedKid) => selectedKid.kidId === kid.kidId));
 }
 
 function AudienceChip({
@@ -114,13 +116,13 @@ function AudienceChip({
 }: {
   option: NewPostAudienceOption;
   isSelected: boolean;
-  onSelect: (audience: NewPostAudience) => void;
+  onSelect: (option: NewPostAudienceOption) => void;
 }) {
   if (option.audience.kind === "room") {
     return (
       <button
         type="button"
-        onClick={() => onSelect(option.audience)}
+        onClick={() => onSelect(option)}
         className={`cursor-pointer rounded-full border-[1.5px] px-4 py-1.5 text-[14px] font-bold ${
           isSelected
             ? "border-[#3F362E] bg-[#3F362E] text-white"
@@ -132,10 +134,16 @@ function AudienceChip({
     );
   }
 
+  const kid = getSingleKidFromOption(option);
+
+  if (!kid) {
+    return null;
+  }
+
   return (
     <button
       type="button"
-      onClick={() => onSelect(option.audience)}
+      onClick={() => onSelect(option)}
       className={`flex cursor-pointer items-center gap-2 rounded-full border-[1.5px] py-1.5 pr-3.5 pl-1.5 text-[14px] font-bold ${
         isSelected
           ? "border-[#3F362E] bg-[#3F362E] text-white"
@@ -145,11 +153,11 @@ function AudienceChip({
       <span
         className="flex h-[26px] w-[26px] items-center justify-center rounded-full font-fredoka text-[13px] font-semibold"
         style={{
-          backgroundColor: option.audience.avatarBg,
-          color: option.audience.avatarColor,
+          backgroundColor: kid.avatarBg,
+          color: kid.avatarColor,
         }}
       >
-        {option.audience.kidInitial}
+        {kid.kidInitial}
       </span>
       {option.label}
     </button>
@@ -189,6 +197,36 @@ export default function NewPostPage() {
   const [description, setDescription] = useState(INITIAL_DESCRIPTION);
   const [error, setError] = useState("");
 
+  function handleSelectAudience(option: NewPostAudienceOption) {
+    setError("");
+
+    if (option.audience.kind === "room") {
+      setSelectedAudience(option.audience);
+      return;
+    }
+
+    const kid = getSingleKidFromOption(option);
+
+    if (!kid) {
+      return;
+    }
+
+    setSelectedAudience((currentAudience) => {
+      if (currentAudience.kind === "room") {
+        return { kind: "kids", kids: [kid] };
+      }
+
+      const isAlreadySelected = currentAudience.kids.some((selectedKid) => selectedKid.kidId === kid.kidId);
+
+      return {
+        kind: "kids",
+        kids: isAlreadySelected
+          ? currentAudience.kids.filter((selectedKid) => selectedKid.kidId !== kid.kidId)
+          : [...currentAudience.kids, kid],
+      };
+    });
+  }
+
   function handlePublish() {
     if (!selectedType) {
       setError("Seleccioná un tipo de publicación.");
@@ -197,6 +235,11 @@ export default function NewPostPage() {
 
     if (!description.trim()) {
       setError("Escribí una descripción antes de publicar.");
+      return;
+    }
+
+    if (selectedAudience.kind === "kids" && selectedAudience.kids.length === 0) {
+      setError("Seleccioná al menos un niño o toda la sala.");
       return;
     }
 
@@ -238,8 +281,8 @@ export default function NewPostPage() {
               <AudienceChip
                 key={option.id}
                 option={option}
-                isSelected={isSameAudience(option.audience, selectedAudience)}
-                onSelect={setSelectedAudience}
+                isSelected={isAudienceOptionSelected(option, selectedAudience)}
+                onSelect={handleSelectAudience}
               />
             ))}
           </div>

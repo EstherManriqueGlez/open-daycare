@@ -14,8 +14,11 @@
 - Mantener copy visible en español y nombres de código en inglés.
 - Conectar el botón `Nueva publicación` del sidebar desktop y del drawer mobile para navegar a `/posts/new`.
 - Conectar el composer `Compartí un momento…` del feed para navegar a `/posts/new`.
-- Renderizar los chips `PARA` usando Mateo, Sofía y Benjamín primero, más niños creados localmente en SPEC 04 si existen, y la opción `Toda la sala`.
+- Renderizar los chips `PARA` usando todos los niños mock de la sala, niños creados localmente en SPEC 04 si existen, y la opción `Toda la sala`.
+- Priorizar Mateo, Sofía y Benjamín al principio de la lista para mantener cercanía visual con la referencia.
 - Iniciar la modal con Mateo seleccionado para calcar la referencia.
+- Permitir seleccionar varios niños a la vez.
+- Hacer que `Toda la sala` sea excluyente y deseleccione cualquier niño previamente seleccionado.
 - Renderizar los chips `TIPO` de la referencia: `Comida`, `Siesta`, `Actividad`, `Logro`, `Ánimo`, `Foto` y `Anuncio`.
 - Iniciar la modal con el contenido visual de la referencia, incluyendo descripción precargada y chips de tipo con estilos equivalentes.
 - Implementar textarea controlado para `DESCRIPCIÓN`.
@@ -59,7 +62,16 @@ export type NewPostType =
   | "announcement";
 
 export type NewPostAudience =
-  | { kind: "kid"; kidId: string; kidName: string; kidInitial: string; avatarBg: string; avatarColor: string }
+  | {
+      kind: "kids";
+      kids: Array<{
+        kidId: string;
+        kidName: string;
+        kidInitial: string;
+        avatarBg: string;
+        avatarColor: string;
+      }>;
+    }
   | { kind: "room"; label: "Toda la sala" };
 
 export interface LocalFeedPost {
@@ -90,17 +102,17 @@ Convenciones:
 - `food`, `nap`, `mood` y `photo` agregan estilos visuales nuevos consistentes con los chips de la modal.
 - Las publicaciones locales se convierten a la forma visual de `FeedPost` antes de pasarlas a `PostCard`.
 - Las publicaciones locales usan `publishedByMe: true`, `hearts: 0` y `comments: 0`.
-- Para audiencia de niño, el feed muestra `Para: familia de {nombre}`.
+- Para audiencia de uno o más niños, el feed muestra `Para: familias de {nombres}`.
 - Para audiencia de sala, el feed muestra `Para: toda la sala`.
 
 ## Implementation plan
 
 1. Crear `app/_data/localFeedPosts.ts` con tipos, clave versionada, lectura segura de `localStorage`, escritura, creación de publicación y mapeo visual hacia el feed.
 2. Extender los tipos y estilos del feed para soportar `food`, `nap`, `mood` y `photo` sin romper los posts mock existentes.
-3. Crear un helper cliente para construir las opciones de audiencia desde los niños mock y los niños locales de SPEC 04, priorizando Mateo, Sofía y Benjamín.
+3. Crear un helper cliente para construir las opciones de audiencia desde todos los niños mock y los niños locales de SPEC 04, priorizando Mateo, Sofía y Benjamín.
 4. Crear `app/posts/new/page.tsx` como Client Component con card/modal centrada y navegación de cierre hacia `/`.
 5. Implementar el header de la modal con `Cancelar`, `Nueva publicación` y `Publicar` fiel a `references/pantallas/crear-publicacion.dc.html`.
-6. Implementar los chips controlados de `PARA`, con Mateo seleccionado por defecto y soporte para `Toda la sala`.
+6. Implementar los chips controlados de `PARA`, con Mateo seleccionado por defecto, selección múltiple de niños y soporte excluyente para `Toda la sala`.
 7. Implementar los chips controlados de `TIPO` con los colores, radios, pesos y spacing de la referencia.
 8. Implementar el textarea controlado con descripción precargada, placeholder `Contá cómo le fue hoy…` y validación de texto no vacío.
 9. Implementar la sección `FOTOS` como placeholder visual con miniatura y botón `Agregar`, sin file picker.
@@ -121,11 +133,14 @@ Convenciones:
 - [ ] El botón `Nueva publicación` del sidebar desktop navega a `/posts/new`.
 - [ ] El botón `Nueva publicación` del drawer mobile navega a `/posts/new`.
 - [ ] El composer `Compartí un momento…` del feed navega a `/posts/new`.
+- [ ] La sección `PARA` muestra todos los niños mock de la sala.
 - [ ] La sección `PARA` muestra Mateo, Sofía y Benjamín primero cuando existen en los datos mock.
 - [ ] La sección `PARA` incluye niños creados localmente en SPEC 04 si existen.
 - [ ] La sección `PARA` incluye la opción `Toda la sala`.
 - [ ] Mateo aparece seleccionado por defecto al abrir la modal.
-- [ ] Los chips de audiencia permiten seleccionar exactamente una audiencia activa.
+- [ ] Los chips de niños permiten seleccionar varios niños a la vez.
+- [ ] Al seleccionar `Toda la sala`, se deseleccionan todos los niños previamente seleccionados.
+- [ ] Al seleccionar un niño después de `Toda la sala`, se deselecciona `Toda la sala` y queda seleccionado ese niño.
 - [ ] La sección `TIPO` muestra `Comida`, `Siesta`, `Actividad`, `Logro`, `Ánimo`, `Foto` y `Anuncio`.
 - [ ] Los chips de tipo conservan colores, radios, pesos y spacing equivalentes a la referencia.
 - [ ] El formulario inicia con la descripción precargada de la referencia.
@@ -136,7 +151,7 @@ Convenciones:
 - [ ] Después de publicar correctamente, la app navega a `/`.
 - [ ] Las publicaciones locales aparecen arriba de los posts mock del feed.
 - [ ] Las publicaciones locales se ordenan de más nuevas a más antiguas.
-- [ ] Una publicación para un niño muestra audiencia `Para: familia de {nombre}` en el feed.
+- [ ] Una publicación para uno o más niños muestra audiencia `Para: familias de {nombres}` en el feed.
 - [ ] Una publicación para `Toda la sala` muestra audiencia `Para: toda la sala` en el feed.
 - [ ] `Actividad`, `Logro` y `Anuncio` mantienen estilos compatibles con los posts existentes.
 - [ ] `Comida`, `Siesta`, `Ánimo` y `Foto` se muestran en el feed con badges legibles y consistentes con la paleta de la modal.
@@ -155,8 +170,10 @@ Convenciones:
 - **Sí:** mostrar publicaciones nuevas arriba de todo. Permite validar inmediatamente que `Publicar` funcionó.
 - **Sí:** iniciar con los valores visuales de la referencia. Prioriza calco visual de `crear-publicacion.dc.html` como pidió el usuario.
 - **Sí:** validar tipo y descripción. Evita posts vacíos sin agregar validaciones que la referencia no sugiere.
-- **Sí:** incluir niños mock y niños locales. Mantiene compatibilidad con SPEC 04.
-- **Sí:** priorizar Mateo, Sofía y Benjamín en los chips. Replica la referencia aunque existan más niños en los datos mock.
+- **Sí:** incluir todos los niños mock y niños locales. Permite publicar para cualquier niño de la sala y mantiene compatibilidad con SPEC 04.
+- **Sí:** priorizar Mateo, Sofía y Benjamín en los chips. Mantiene cercanía con la referencia sin ocultar el resto de la sala.
+- **Sí:** permitir selección múltiple de niños. El caso de uso real puede requerir publicar el mismo contenido para varias familias sin marcar toda la sala.
+- **Sí:** hacer `Toda la sala` excluyente. Evita ambigüedad entre audiencia total y selección parcial de familias.
 - **Sí:** mapear `Actividad`, `Logro` y `Anuncio` al feed existente. Reduce cambios innecesarios y conserva estilos ya implementados.
 - **Sí:** agregar estilos para `Comida`, `Siesta`, `Ánimo` y `Foto`. La modal debe mostrar todos los tipos de la referencia y el feed debe poder renderizarlos.
 - **No:** usar ruta interceptada de Next.js. Es más compleja que lo necesario para este prototipo y no fue requerida.

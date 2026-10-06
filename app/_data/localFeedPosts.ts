@@ -13,12 +13,14 @@ export type NewPostType =
 
 export type NewPostAudience =
   | {
-      kind: "kid";
-      kidId: string;
-      kidName: string;
-      kidInitial: string;
-      avatarBg: string;
-      avatarColor: string;
+      kind: "kids";
+      kids: Array<{
+        kidId: string;
+        kidName: string;
+        kidInitial: string;
+        avatarBg: string;
+        avatarColor: string;
+      }>;
     }
   | { kind: "room"; label: "Toda la sala" };
 
@@ -77,14 +79,21 @@ function isNewPostAudience(value: unknown): value is NewPostAudience {
     return audience.label === "Toda la sala";
   }
 
-  return (
-    audience.kind === "kid" &&
-    typeof audience.kidId === "string" &&
-    typeof audience.kidName === "string" &&
-    typeof audience.kidInitial === "string" &&
-    typeof audience.avatarBg === "string" &&
-    typeof audience.avatarColor === "string"
-  );
+  return audience.kind === "kids" && Array.isArray(audience.kids) && audience.kids.every((kid) => {
+    if (!kid || typeof kid !== "object") {
+      return false;
+    }
+
+    const selectedKid = kid as Record<string, unknown>;
+
+    return (
+      typeof selectedKid.kidId === "string" &&
+      typeof selectedKid.kidName === "string" &&
+      typeof selectedKid.kidInitial === "string" &&
+      typeof selectedKid.avatarBg === "string" &&
+      typeof selectedKid.avatarColor === "string"
+    );
+  });
 }
 
 function isLocalFeedPost(value: unknown): value is LocalFeedPost {
@@ -130,7 +139,9 @@ function getAudienceLabel(audience: NewPostAudience) {
     return "Para: toda la sala";
   }
 
-  return `Para: familia de ${audience.kidName}`;
+  const kidNames = audience.kids.map((kid) => kid.kidName.split(" ")[0] || kid.kidName);
+
+  return `Para: familias de ${kidNames.join(", ")}`;
 }
 
 export function parseLocalFeedPostsStorageValue(storedValue: string | null): LocalFeedPost[] {
@@ -190,13 +201,14 @@ export function sortLocalFeedPostsByNewest(posts: LocalFeedPost[]) {
 }
 
 export function mapLocalFeedPostToView(post: LocalFeedPost): FeedPost {
+  const firstSelectedKid = post.audience.kind === "kids" ? post.audience.kids[0] : undefined;
   const author =
-    post.audience.kind === "kid"
+    firstSelectedKid
       ? {
-          name: post.audience.kidName,
-          initial: post.audience.kidInitial,
-          avatarBg: post.audience.avatarBg,
-          avatarColor: post.audience.avatarColor,
+          name: firstSelectedKid.kidName,
+          initial: firstSelectedKid.kidInitial,
+          avatarBg: firstSelectedKid.avatarBg,
+          avatarColor: firstSelectedKid.avatarColor,
         }
       : POST_AUTHOR_BY_TYPE[post.type];
 
