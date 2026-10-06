@@ -59,6 +59,12 @@ export function LinkedParentsCard({ kidId, parents }: LinkedParentsCardProps) {
         PADRES VINCULADOS
       </div>
       <div className="flex flex-col gap-[14px]">
+        {visibleParents.length === 0 ? (
+          <div className="rounded-[14px] border border-dashed border-[#E0D2C0] bg-[#FBF4EC] px-4 py-3 text-[13.5px] leading-normal text-[#8A7C6D]">
+            Todavía no hay padres vinculados para este niño.
+          </div>
+        ) : null}
+
         {visibleParents.map((parent) => (
           <div key={parent.id} className="flex flex-wrap items-center gap-3">
             <div
@@ -85,7 +91,7 @@ export function LinkedParentsCard({ kidId, parents }: LinkedParentsCardProps) {
 
         <Link
           href={`/kids/${kidId}/link-parent`}
-          className="flex items-center gap-3 pt-2 text-left"
+          className="flex min-w-0 items-center gap-3 pt-2 text-left"
         >
           <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full border-[1.5px] border-dashed border-[#D8CBBA] text-[#B0A290]">
             <svg
@@ -102,7 +108,7 @@ export function LinkedParentsCard({ kidId, parents }: LinkedParentsCardProps) {
               <path d="M12 5v14M5 12h14" />
             </svg>
           </span>
-          <span className="text-[14.5px] font-extrabold text-[#C5503A]">
+          <span className="min-w-0 text-[14.5px] font-extrabold text-[#C5503A]">
             Vincular otro padre
           </span>
         </Link>

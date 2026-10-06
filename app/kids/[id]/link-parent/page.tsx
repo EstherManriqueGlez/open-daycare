@@ -299,7 +299,7 @@ export default function LinkParentPage() {
             <div className="mb-2 text-[12px] font-extrabold tracking-[0.7px] text-[#A88526]">
               CÓDIGO DE INVITACIÓN
             </div>
-            <div className="font-fredoka text-[34px] leading-tight font-semibold tracking-[7px] text-[#8A7234]">
+            <div className="font-fredoka text-[30px] leading-tight font-semibold tracking-[5px] text-[#8A7234] min-[380px]:text-[34px] min-[380px]:tracking-[7px]">
               {invitationCode}
             </div>
             <div className="mt-1.5 text-[13px] text-[#A88526]">Vence en 7 días</div>
