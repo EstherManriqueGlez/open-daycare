@@ -37,9 +37,10 @@ export interface NewPostForm {
   description: string;
 }
 
-export type LocalFeedPostView = Omit<FeedPost, "type"> & { type: NewPostType };
-
-const POST_AUTHOR_BY_TYPE: Record<NewPostType, { name: string; initial?: string; avatarBg: string; avatarColor: string }> = {
+const POST_AUTHOR_BY_TYPE: Record<
+  NewPostType,
+  { name: string; initial?: string; avatarBg: string; avatarColor: string }
+> = {
   food: { name: "Comida", initial: "C", avatarBg: "#F4DC8E", avatarColor: "#9A7B1E" },
   nap: { name: "Siesta", initial: "S", avatarBg: "#E7DCF6", avatarColor: "#7B5FC0" },
   activity: { name: "Actividad", initial: "A", avatarBg: "#A9D9E8", avatarColor: "#1F7A93" },
@@ -188,13 +189,16 @@ export function sortLocalFeedPostsByNewest(posts: LocalFeedPost[]) {
   });
 }
 
-export function mapLocalFeedPostToView(post: LocalFeedPost): LocalFeedPostView {
-  const author = post.audience.kind === "kid" ? {
-    name: post.audience.kidName,
-    initial: post.audience.kidInitial,
-    avatarBg: post.audience.avatarBg,
-    avatarColor: post.audience.avatarColor,
-  } : POST_AUTHOR_BY_TYPE[post.type];
+export function mapLocalFeedPostToView(post: LocalFeedPost): FeedPost {
+  const author =
+    post.audience.kind === "kid"
+      ? {
+          name: post.audience.kidName,
+          initial: post.audience.kidInitial,
+          avatarBg: post.audience.avatarBg,
+          avatarColor: post.audience.avatarColor,
+        }
+      : POST_AUTHOR_BY_TYPE[post.type];
 
   return {
     id: post.id,

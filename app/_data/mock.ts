@@ -1,9 +1,20 @@
-export type PostType = "achievement" | "activity" | "announcement";
+export type PostType =
+  | "food"
+  | "nap"
+  | "activity"
+  | "achievement"
+  | "mood"
+  | "photo"
+  | "announcement";
 export type NavIcon = "home" | "kids" | "bell" | "user";
 
 export const POST_TYPE_LABEL: Record<PostType, string> = {
+  food: "COMIDA",
+  nap: "SIESTA",
   achievement: "LOGRO",
   activity: "ACTIVIDAD",
+  mood: "ÁNIMO",
+  photo: "FOTO",
   announcement: "ANUNCIO",
 };
 
