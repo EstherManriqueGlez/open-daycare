@@ -2,7 +2,7 @@ import { feedPosts, feedSubtitle } from "@/app/_data/mock";
 import { Composer } from "@/components/home/Composer";
 import { FeedDivider } from "@/components/home/FeedDivider";
 import { FeedHeader } from "@/components/home/FeedHeader";
-import { PostCard } from "@/components/home/PostCard";
+import { FeedPostList } from "@/components/home/FeedPostList";
 import { MobileNav } from "@/components/shared/MobileNav";
 import { Sidebar } from "@/components/shared/Sidebar";
 
@@ -18,11 +18,7 @@ export default function Home() {
           <Composer />
           <FeedDivider />
 
-          <div className="flex flex-col gap-4">
-            {feedPosts.map((post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </div>
+          <FeedPostList initialPosts={feedPosts} />
         </div>
       </main>
     </div>

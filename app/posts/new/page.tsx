@@ -211,25 +211,25 @@ export default function NewPostPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-start justify-center bg-[#F6ECDF] px-4 py-8 sm:px-6 sm:py-10">
+    <main className="flex min-h-screen items-start justify-center bg-[#F6ECDF] px-4 py-6 sm:px-6 sm:py-10">
       <section className="w-full max-w-[580px] overflow-hidden rounded-[24px] border border-[#ECE0D0] bg-[#FBF4EC] shadow-[0_20px_50px_-24px_rgba(63,54,46,0.35)]">
-        <header className="flex items-center justify-between border-b border-[#ECE0D0] px-[26px] py-5">
-          <Link href="/" className="text-[15px] font-bold text-[#94887B]">
+        <header className="flex items-center justify-between gap-3 border-b border-[#ECE0D0] px-5 py-5 sm:px-[26px]">
+          <Link href="/" className="flex-none text-[15px] font-bold text-[#94887B]">
             Cancelar
           </Link>
-          <h1 className="font-fredoka text-[18px] font-semibold text-[#3F362E]">
+          <h1 className="min-w-0 text-center font-fredoka text-[18px] font-semibold text-[#3F362E]">
             Nueva publicación
           </h1>
           <button
             type="button"
             onClick={handlePublish}
-            className="text-[15px] font-extrabold text-[#D9583C]"
+            className="flex-none text-[15px] font-extrabold text-[#D9583C]"
           >
             Publicar
           </button>
         </header>
 
-        <div className="px-[26px] py-6">
+        <div className="px-5 py-6 sm:px-[26px]">
           <div className="mb-2.5 text-[12px] font-extrabold tracking-[0.7px] text-[#94887B]">
             PARA
           </div>
@@ -284,7 +284,7 @@ export default function NewPostPage() {
           <div className="mb-2.5 text-[12px] font-extrabold tracking-[0.7px] text-[#94887B]">
             FOTOS
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
             <div className="flex h-24 w-24 items-center justify-center rounded-[14px] border border-[#ECE0D0] bg-[#F4ECE1] text-[#CBB89F]">
               <PhotoIcon width="26" height="26" />
             </div>
