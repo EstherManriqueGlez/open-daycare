@@ -8,11 +8,66 @@ import {
   parseLocalKidsStorageValue,
 } from "@/app/_data/localKids";
 import type { NewPostAudience } from "@/app/_data/localFeedPosts";
+import type { NewPostType } from "@/app/_data/localFeedPosts";
 import {
   buildNewPostAudienceOptions,
   getDefaultNewPostAudience,
 } from "@/app/_data/postAudiences";
 import type { NewPostAudienceOption } from "@/app/_data/postAudiences";
+import { PhotoIcon, PlusIcon } from "@/components/shared/icons";
+
+const INITIAL_DESCRIPTION =
+  "Pintamos con témperas esta mañana. Mateo eligió el azul para todo y se concentró un montón.";
+
+const POST_TYPE_OPTIONS: Array<{
+  type: NewPostType;
+  label: string;
+  selectedClassName: string;
+  idleClassName: string;
+}> = [
+  {
+    type: "food",
+    label: "Comida",
+    selectedClassName: "bg-[#9A7B1E] text-white",
+    idleClassName: "bg-[#F4DC8E] text-[#9A7B1E]",
+  },
+  {
+    type: "nap",
+    label: "Siesta",
+    selectedClassName: "bg-[#7B5FC0] text-white",
+    idleClassName: "bg-[#E7DCF6] text-[#7B5FC0]",
+  },
+  {
+    type: "activity",
+    label: "Actividad",
+    selectedClassName: "bg-[#2E89A6] text-white",
+    idleClassName: "bg-[#C7E7F1] text-[#2E89A6]",
+  },
+  {
+    type: "achievement",
+    label: "Logro",
+    selectedClassName: "bg-[#3E9B6C] text-white",
+    idleClassName: "bg-[#CFEBD8] text-[#3E9B6C]",
+  },
+  {
+    type: "mood",
+    label: "Ánimo",
+    selectedClassName: "bg-[#C56486] text-white",
+    idleClassName: "bg-[#F9D2DE] text-[#C56486]",
+  },
+  {
+    type: "photo",
+    label: "Foto",
+    selectedClassName: "bg-[#D9684A] text-white",
+    idleClassName: "bg-[#FBD8CC] text-[#D9684A]",
+  },
+  {
+    type: "announcement",
+    label: "Anuncio",
+    selectedClassName: "bg-[#4E72C8] text-white",
+    idleClassName: "bg-[#CCD8F4] text-[#4E72C8]",
+  },
+];
 
 function getLocalKidsSnapshot() {
   if (typeof window === "undefined") {
@@ -99,12 +154,36 @@ function AudienceChip({
   );
 }
 
+function TypeChip({
+  option,
+  isSelected,
+  onSelect,
+}: {
+  option: (typeof POST_TYPE_OPTIONS)[number];
+  isSelected: boolean;
+  onSelect: (type: NewPostType) => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(option.type)}
+      className={`cursor-pointer rounded-full px-4 py-2 text-[13.5px] font-extrabold ${
+        isSelected ? option.selectedClassName : option.idleClassName
+      }`}
+    >
+      {option.label}
+    </button>
+  );
+}
+
 export default function NewPostPage() {
   const localKidsSnapshot = useSyncExternalStore(subscribeToLocalKids, getLocalKidsSnapshot, () => "");
   const audienceOptions = buildNewPostAudienceOptions(parseLocalKidsStorageValue(localKidsSnapshot));
   const [selectedAudience, setSelectedAudience] = useState<NewPostAudience>(() =>
     getDefaultNewPostAudience(audienceOptions),
   );
+  const [selectedType, setSelectedType] = useState<NewPostType>("food");
+  const [description, setDescription] = useState(INITIAL_DESCRIPTION);
 
   return (
     <main className="flex min-h-screen items-start justify-center bg-[#F6ECDF] px-4 py-8 sm:px-6 sm:py-10">
@@ -134,6 +213,50 @@ export default function NewPostPage() {
                 onSelect={setSelectedAudience}
               />
             ))}
+          </div>
+
+          <div className="mb-2.5 text-[12px] font-extrabold tracking-[0.7px] text-[#94887B]">
+            TIPO
+          </div>
+          <div className="mb-[22px] flex flex-wrap gap-[9px]">
+            {POST_TYPE_OPTIONS.map((option) => (
+              <TypeChip
+                key={option.type}
+                option={option}
+                isSelected={option.type === selectedType}
+                onSelect={setSelectedType}
+              />
+            ))}
+          </div>
+
+          <label
+            htmlFor="post-description"
+            className="mb-2.5 block text-[12px] font-extrabold tracking-[0.7px] text-[#94887B]"
+          >
+            DESCRIPCIÓN
+          </label>
+          <textarea
+            id="post-description"
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+            placeholder="Contá cómo le fue hoy…"
+            className="mb-[22px] min-h-[120px] w-full resize-y rounded-[14px] border-[1.5px] border-[#EADFD0] bg-white px-4 py-3.5 text-[15px] leading-[1.5] text-[#3F362E] placeholder:text-[#B6A99B] focus:outline-none"
+          />
+
+          <div className="mb-2.5 text-[12px] font-extrabold tracking-[0.7px] text-[#94887B]">
+            FOTOS
+          </div>
+          <div className="flex gap-3">
+            <div className="flex h-24 w-24 items-center justify-center rounded-[14px] border border-[#ECE0D0] bg-[#F4ECE1] text-[#CBB89F]">
+              <PhotoIcon width="26" height="26" />
+            </div>
+            <button
+              type="button"
+              className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-[14px] border-[1.5px] border-dashed border-[#DBCDBA] bg-[#F4ECE1] text-[#B0A290]"
+            >
+              <PlusIcon width="22" height="22" className="text-[#C5503A]" />
+              <span className="text-[12px]">Agregar</span>
+            </button>
           </div>
         </div>
       </section>
