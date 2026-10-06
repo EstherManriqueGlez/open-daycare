@@ -1,6 +1,6 @@
 # SPEC 06 — New post modal
 
-> **Estado:** Approved
+> **Estado:** Implemented
 > **Depende de:** SPEC 01, SPEC 04
 > **Fecha:** 2026-10-05
 > **Objetivo:** Implementar la ruta modal `/posts/new` para crear una nueva publicación fiel a `references/pantallas/crear-publicacion.dc.html` y mostrarla arriba del feed usando persistencia local.
