@@ -29,6 +29,15 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 - Playwright: screenshots and any Playwright output go in `.playwright-mcp/` (gitignored).
 - Context7: use it to fetch current framework docs instead of relying on training data.
+- Supabase: query the database, apply migrations, read logs/advisors, manage Edge Functions. Prefer it over guessing the schema.
+
+## Supabase
+
+- Skills (load with the `skill` tool before touching the DB):
+  - `.agents/skills/supabase/SKILL.md` — use for any Supabase task (auth, RLS, migrations, Edge Functions, debugging). Supabase changes fast: verify against the changelog/current docs, don't rely on training data; always verify fixes with a test query.
+  - `.agents/skills/supabase-postgres-best-practices/SKILL.md` — load **before** writing or changing anything in Postgres: tables, columns, types, indexes, RLS policies, SQL queries, migrations, and performance diagnostics.
+- Schema reference: the `docs` project reference points to `../07-DB-Schema` — target schema (tables, columns, relations). It is **not implemented in the database yet**, reference only.
+- Env vars: `.env.template` lists required variables (e.g. `SUPBASE_DB_PASSWORD`). Real `.env*` files are gitignored (only the template is committed) — never commit secrets.
 
 ## Agents
 
