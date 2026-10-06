@@ -125,7 +125,11 @@ export function hasLocalParentInvitationForEmail(kidId: string, parentEmail: str
   );
 }
 
-export function createLocalParentInvitation(kidId: string, form: LinkParentForm): LocalParentInvitation {
+export function createLocalParentInvitation(
+  kidId: string,
+  form: LinkParentForm,
+  invitationCode = generateInvitationCode(),
+): LocalParentInvitation {
   const parentEmail = normalizeParentEmail(form.parentEmail);
   const parentName = form.parentName.trim();
 
@@ -135,7 +139,7 @@ export function createLocalParentInvitation(kidId: string, form: LinkParentForm)
     parentName,
     parentEmail,
     relationship: form.relationship,
-    invitationCode: generateInvitationCode(),
+    invitationCode,
     status: "pending",
     createdAt: new Date().toISOString(),
   };

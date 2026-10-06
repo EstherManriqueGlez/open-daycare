@@ -1,16 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState, useSyncExternalStore } from "react";
 
 import { findMockKidById } from "@/app/_data/kidResolver";
 import { LOCAL_KIDS_STORAGE_KEY, mapLocalKidToKid, parseLocalKidsStorageValue } from "@/app/_data/localKids";
 import {
+  createLocalParentInvitation,
   generateInvitationCode,
   hasLocalParentInvitationForEmail,
   LOCAL_PARENT_INVITATIONS_STORAGE_KEY,
   parseLocalParentInvitationsStorageValue,
+  saveLocalParentInvitation,
 } from "@/app/_data/localParentInvitations";
 import type { LinkParentForm, ParentRelationship } from "@/app/_data/localParentInvitations";
 
@@ -80,6 +82,7 @@ function getFieldClassName(hasError: boolean) {
 }
 
 export default function LinkParentPage() {
+  const router = useRouter();
   const params = useParams<{ id?: string | string[] }>();
   const kidId = getParamValue(params.id);
   const localKidsSnapshot = useSyncExternalStore(subscribeToLocalKids, getLocalKidsSnapshot, () => "");
@@ -144,7 +147,12 @@ export default function LinkParentPage() {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    validateForm();
+    if (!validateForm()) {
+      return;
+    }
+
+    saveLocalParentInvitation(createLocalParentInvitation(kidId, form, invitationCode));
+    router.push(profileHref);
   }
 
   const profileHref = kidId ? `/kids/${kidId}` : "/kids";
