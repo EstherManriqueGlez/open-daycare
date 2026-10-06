@@ -27,6 +27,7 @@ export interface FeedPost {
 export interface LinkedParent {
   id: string;
   name: string;
+  parentEmail?: string;
   initial: string;
   relationshipStatus: string;
   avatarBg: string;
@@ -103,6 +104,7 @@ export const kids: Kid[] = [
       {
         id: "lucia-fernandez",
         name: "Lucía Fernández",
+        parentEmail: "lucia.fernandez@example.com",
         initial: "L",
         relationshipStatus: "Mamá · activa",
         avatarBg: "#C9B6E8",
@@ -111,6 +113,7 @@ export const kids: Kid[] = [
       {
         id: "diego-fernandez",
         name: "Diego Fernández",
+        parentEmail: "diego.fernandez@example.com",
         initial: "D",
         relationshipStatus: "Papá · invitación enviada",
         avatarBg: "#A9C7E8",
@@ -133,6 +136,7 @@ export const kids: Kid[] = [
       {
         id: "mariana-mendez",
         name: "Mariana Méndez",
+        parentEmail: "mariana.mendez@example.com",
         initial: "M",
         relationshipStatus: "Mamá · activa",
         avatarBg: "#C9B6E8",
@@ -155,6 +159,7 @@ export const kids: Kid[] = [
       {
         id: "paula-ruiz",
         name: "Paula Ruiz",
+        parentEmail: "paula.ruiz@example.com",
         initial: "P",
         relationshipStatus: "Mamá · activa",
         avatarBg: "#F4B8CC",
@@ -163,6 +168,7 @@ export const kids: Kid[] = [
       {
         id: "nicolas-ruiz",
         name: "Nicolás Ruiz",
+        parentEmail: "nicolas.ruiz@example.com",
         initial: "N",
         relationshipStatus: "Papá · activa",
         avatarBg: "#A9C7E8",
@@ -204,6 +210,7 @@ export const kids: Kid[] = [
       {
         id: "camila-diaz",
         name: "Camila Díaz",
+        parentEmail: "camila.diaz@example.com",
         initial: "C",
         relationshipStatus: "Mamá · activa",
         avatarBg: "#C9B6E8",
@@ -226,6 +233,7 @@ export const kids: Kid[] = [
       {
         id: "rocio-castro",
         name: "Rocío Castro",
+        parentEmail: "rocio.castro@example.com",
         initial: "R",
         relationshipStatus: "Mamá · activa",
         avatarBg: "#F4B8CC",
@@ -248,6 +256,7 @@ export const kids: Kid[] = [
       {
         id: "andrea-romero",
         name: "Andrea Romero",
+        parentEmail: "andrea.romero@example.com",
         initial: "A",
         relationshipStatus: "Mamá · activa",
         avatarBg: "#A9C7E8",
@@ -270,6 +279,7 @@ export const kids: Kid[] = [
       {
         id: "julia-vega",
         name: "Julia Vega",
+        parentEmail: "julia.vega@example.com",
         initial: "J",
         relationshipStatus: "Mamá · activa",
         avatarBg: "#B9DEC4",
