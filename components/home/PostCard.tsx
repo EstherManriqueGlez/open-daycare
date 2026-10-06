@@ -11,8 +11,12 @@ const BADGE_STYLES: Record<
   PostType,
   { background: string; foreground: string }
 > = {
+  food: { background: "#F4DC8E", foreground: "#9A7B1E" },
+  nap: { background: "#E7DCF6", foreground: "#7B5FC0" },
   achievement: { background: "#CFEBD8", foreground: "#3E9B6C" },
   activity: { background: "#C7E7F1", foreground: "#2E89A6" },
+  mood: { background: "#F9D2DE", foreground: "#C56486" },
+  photo: { background: "#FBD8CC", foreground: "#D9684A" },
   announcement: { background: "#CCD8F4", foreground: "#4E72C8" },
 };
 
