@@ -193,7 +193,7 @@ export default function NewPostPage() {
   const [selectedAudience, setSelectedAudience] = useState<NewPostAudience>(() =>
     getDefaultNewPostAudience(audienceOptions),
   );
-  const [selectedType, setSelectedType] = useState<NewPostType>("food");
+  const [selectedType, setSelectedType] = useState<NewPostType | "">("food");
   const [description, setDescription] = useState(INITIAL_DESCRIPTION);
   const [error, setError] = useState("");
 
@@ -296,7 +296,10 @@ export default function NewPostPage() {
                 key={option.type}
                 option={option}
                 isSelected={option.type === selectedType}
-                onSelect={setSelectedType}
+                onSelect={(type) => {
+                  setSelectedType((currentType) => (currentType === type ? "" : type));
+                  setError("");
+                }}
               />
             ))}
           </div>

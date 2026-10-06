@@ -125,40 +125,40 @@ Convenciones:
 
 ## Acceptance criteria
 
-- [ ] `/posts/new` renderiza una card/modal centrada visualmente fiel a `references/pantallas/crear-publicacion.dc.html`.
-- [ ] La ruta usa fondo cálido, tarjeta `#FBF4EC`, borde `#ECE0D0`, radio `24px`, sombra, tipografía Fredoka/Nunito y spacing equivalente a la referencia.
-- [ ] La ruta no renderiza `Sidebar`, `MobileNav` ni el layout completo del feed alrededor de la card/modal.
-- [ ] El header muestra `Cancelar`, `Nueva publicación` y `Publicar` con jerarquía visual equivalente a la referencia.
-- [ ] `Cancelar` navega a `/` sin guardar datos.
-- [ ] El botón `Nueva publicación` del sidebar desktop navega a `/posts/new`.
-- [ ] El botón `Nueva publicación` del drawer mobile navega a `/posts/new`.
-- [ ] El composer `Compartí un momento…` del feed navega a `/posts/new`.
-- [ ] La sección `PARA` muestra todos los niños mock de la sala.
-- [ ] La sección `PARA` muestra Mateo, Sofía y Benjamín primero cuando existen en los datos mock.
-- [ ] La sección `PARA` incluye niños creados localmente en SPEC 04 si existen.
-- [ ] La sección `PARA` incluye la opción `Toda la sala`.
-- [ ] Mateo aparece seleccionado por defecto al abrir la modal.
-- [ ] Los chips de niños permiten seleccionar varios niños a la vez.
-- [ ] Al seleccionar `Toda la sala`, se deseleccionan todos los niños previamente seleccionados.
-- [ ] Al seleccionar un niño después de `Toda la sala`, se deselecciona `Toda la sala` y queda seleccionado ese niño.
-- [ ] La sección `TIPO` muestra `Comida`, `Siesta`, `Actividad`, `Logro`, `Ánimo`, `Foto` y `Anuncio`.
-- [ ] Los chips de tipo conservan colores, radios, pesos y spacing equivalentes a la referencia.
-- [ ] El formulario inicia con la descripción precargada de la referencia.
-- [ ] El textarea permite editar la descripción.
-- [ ] `Publicar` muestra error y no guarda si no hay tipo seleccionado.
-- [ ] `Publicar` muestra error y no guarda si la descripción queda vacía después de `trim()`.
-- [ ] Al publicar datos válidos, se crea un `LocalFeedPost` en `localStorage` bajo `open-daycare:feed-posts:v1`.
-- [ ] Después de publicar correctamente, la app navega a `/`.
-- [ ] Las publicaciones locales aparecen arriba de los posts mock del feed.
-- [ ] Las publicaciones locales se ordenan de más nuevas a más antiguas.
-- [ ] Una publicación para uno o más niños muestra audiencia `Para: familias de {nombres}` en el feed.
-- [ ] Una publicación para `Toda la sala` muestra audiencia `Para: toda la sala` en el feed.
-- [ ] `Actividad`, `Logro` y `Anuncio` mantienen estilos compatibles con los posts existentes.
-- [ ] `Comida`, `Siesta`, `Ánimo` y `Foto` se muestran en el feed con badges legibles y consistentes con la paleta de la modal.
-- [ ] La sección `FOTOS` muestra miniatura placeholder y botón `Agregar` sin abrir file picker ni subir archivos.
-- [ ] En mobile, la modal no genera overflow horizontal y conserva jerarquía visual legible.
-- [ ] `npm run lint` termina sin errores.
-- [ ] `npx tsc --noEmit` termina sin errores.
+- [x] `/posts/new` renderiza una card/modal centrada visualmente fiel a `references/pantallas/crear-publicacion.dc.html`.
+- [x] La ruta usa fondo cálido, tarjeta `#FBF4EC`, borde `#ECE0D0`, radio `24px`, sombra, tipografía Fredoka/Nunito y spacing equivalente a la referencia.
+- [x] La ruta no renderiza `Sidebar`, `MobileNav` ni el layout completo del feed alrededor de la card/modal.
+- [x] El header muestra `Cancelar`, `Nueva publicación` y `Publicar` con jerarquía visual equivalente a la referencia.
+- [x] `Cancelar` navega a `/` sin guardar datos.
+- [x] El botón `Nueva publicación` del sidebar desktop navega a `/posts/new`.
+- [x] El botón `Nueva publicación` del drawer mobile navega a `/posts/new`.
+- [x] El composer `Compartí un momento…` del feed navega a `/posts/new`.
+- [x] La sección `PARA` muestra todos los niños mock de la sala.
+- [x] La sección `PARA` muestra Mateo, Sofía y Benjamín primero cuando existen en los datos mock.
+- [x] La sección `PARA` incluye niños creados localmente en SPEC 04 si existen.
+- [x] La sección `PARA` incluye la opción `Toda la sala`.
+- [x] Mateo aparece seleccionado por defecto al abrir la modal.
+- [x] Los chips de niños permiten seleccionar varios niños a la vez.
+- [x] Al seleccionar `Toda la sala`, se deseleccionan todos los niños previamente seleccionados.
+- [x] Al seleccionar un niño después de `Toda la sala`, se deselecciona `Toda la sala` y queda seleccionado ese niño.
+- [x] La sección `TIPO` muestra `Comida`, `Siesta`, `Actividad`, `Logro`, `Ánimo`, `Foto` y `Anuncio`.
+- [x] Los chips de tipo conservan colores, radios, pesos y spacing equivalentes a la referencia.
+- [x] El formulario inicia con la descripción precargada de la referencia.
+- [x] El textarea permite editar la descripción.
+- [x] `Publicar` muestra error y no guarda si no hay tipo seleccionado.
+- [x] `Publicar` muestra error y no guarda si la descripción queda vacía después de `trim()`.
+- [x] Al publicar datos válidos, se crea un `LocalFeedPost` en `localStorage` bajo `open-daycare:feed-posts:v1`.
+- [x] Después de publicar correctamente, la app navega a `/`.
+- [x] Las publicaciones locales aparecen arriba de los posts mock del feed.
+- [x] Las publicaciones locales se ordenan de más nuevas a más antiguas.
+- [x] Una publicación para uno o más niños muestra audiencia `Para: familias de {nombres}` en el feed.
+- [x] Una publicación para `Toda la sala` muestra audiencia `Para: toda la sala` en el feed.
+- [x] `Actividad`, `Logro` y `Anuncio` mantienen estilos compatibles con los posts existentes.
+- [x] `Comida`, `Siesta`, `Ánimo` y `Foto` se muestran en el feed con badges legibles y consistentes con la paleta de la modal.
+- [x] La sección `FOTOS` muestra miniatura placeholder y botón `Agregar` sin abrir file picker ni subir archivos.
+- [x] En mobile, la modal no genera overflow horizontal y conserva jerarquía visual legible.
+- [x] `npm run lint` termina sin errores.
+- [x] `npx tsc --noEmit` termina sin errores.
 
 ## Decisions
 
