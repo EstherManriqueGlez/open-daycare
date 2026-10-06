@@ -1,4 +1,5 @@
-import { mapLocalKidToKid, readLocalKids } from "./localKids";
+import { mapLocalKidToKid } from "./localKids";
+import type { LocalKid } from "./localKids";
 import type { NewPostAudience } from "./localFeedPosts";
 import { kids } from "./mock";
 import type { Kid } from "./mock";
@@ -32,10 +33,10 @@ function getPriorityMockKids() {
   );
 }
 
-export function buildNewPostAudienceOptions(): NewPostAudienceOption[] {
+export function buildNewPostAudienceOptions(localKids: LocalKid[] = []): NewPostAudienceOption[] {
   const priorityOptions = getPriorityMockKids().map(mapKidToAudienceOption);
   const priorityIds = new Set(priorityOptions.map((option) => option.id));
-  const localOptions = readLocalKids()
+  const localOptions = localKids
     .map(mapLocalKidToKid)
     .filter((kid) => !priorityIds.has(kid.id))
     .map(mapKidToAudienceOption);
