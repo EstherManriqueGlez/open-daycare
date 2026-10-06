@@ -6,16 +6,24 @@ import { useState, useSyncExternalStore } from "react";
 
 import { findMockKidById } from "@/app/_data/kidResolver";
 import { LOCAL_KIDS_STORAGE_KEY, mapLocalKidToKid, parseLocalKidsStorageValue } from "@/app/_data/localKids";
+import {
+  generateInvitationCode,
+  hasLocalParentInvitationForEmail,
+  LOCAL_PARENT_INVITATIONS_STORAGE_KEY,
+  parseLocalParentInvitationsStorageValue,
+} from "@/app/_data/localParentInvitations";
 import type { LinkParentForm, ParentRelationship } from "@/app/_data/localParentInvitations";
 
 const RELATIONSHIP_OPTIONS: ParentRelationship[] = ["Mamá", "Papá", "Tutor/a"];
-const PREVIEW_INVITATION_CODE = "7K4P9";
+const BASIC_EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const INITIAL_FORM: LinkParentForm = {
   parentName: "",
   parentEmail: "",
   relationship: "Mamá",
 };
+
+type FormErrors = Partial<Record<keyof LinkParentForm | "form", string>>;
 
 function getParamValue(value: string | string[] | undefined) {
   if (Array.isArray(value)) {
@@ -45,25 +53,98 @@ function subscribeToLocalKids(onStoreChange: () => void) {
   return () => window.removeEventListener("storage", handleStorage);
 }
 
+function getLocalParentInvitationsSnapshot() {
+  if (typeof window === "undefined") {
+    return "";
+  }
+
+  return window.localStorage.getItem(LOCAL_PARENT_INVITATIONS_STORAGE_KEY) ?? "";
+}
+
+function subscribeToLocalParentInvitations(onStoreChange: () => void) {
+  function handleStorage(event: StorageEvent) {
+    if (event.key === LOCAL_PARENT_INVITATIONS_STORAGE_KEY) {
+      onStoreChange();
+    }
+  }
+
+  window.addEventListener("storage", handleStorage);
+
+  return () => window.removeEventListener("storage", handleStorage);
+}
+
+function getFieldClassName(hasError: boolean) {
+  return `w-full rounded-[14px] border-[1.5px] bg-white px-4 py-[13px] text-[15px] text-[#3F362E] placeholder:text-[#B6A99B] focus:outline-none ${
+    hasError ? "border-[#D9583C] focus:border-[#D9583C]" : "border-[#EADFD0] focus:border-[#F2937A]"
+  }`;
+}
+
 export default function LinkParentPage() {
   const params = useParams<{ id?: string | string[] }>();
   const kidId = getParamValue(params.id);
   const localKidsSnapshot = useSyncExternalStore(subscribeToLocalKids, getLocalKidsSnapshot, () => "");
+  const localParentInvitationsSnapshot = useSyncExternalStore(
+    subscribeToLocalParentInvitations,
+    getLocalParentInvitationsSnapshot,
+    () => "",
+  );
   const [form, setForm] = useState<LinkParentForm>(INITIAL_FORM);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [invitationCode] = useState(generateInvitationCode);
 
   const mockKid = findMockKidById(kidId);
   const localKid = parseLocalKidsStorageValue(localKidsSnapshot).find((item) => item.id === kidId);
   const kid = mockKid ?? (localKid ? mapLocalKidToKid(localKid) : undefined);
+  const localParentInvitations = parseLocalParentInvitationsStorageValue(localParentInvitationsSnapshot);
+  const hasErrors = Object.values(errors).some(Boolean);
 
   function updateField(field: keyof LinkParentForm, value: string) {
     setForm((currentForm) => ({
       ...currentForm,
       [field]: value,
     }));
+
+    setErrors((currentErrors) => ({
+      ...currentErrors,
+      [field]: undefined,
+      form: undefined,
+    }));
+  }
+
+  function validateForm() {
+    const nextErrors: FormErrors = {};
+    const parentName = form.parentName.trim();
+    const parentEmail = form.parentEmail.trim();
+
+    if (!kid) {
+      nextErrors.form = "No pudimos encontrar este niño.";
+    }
+
+    if (!parentName) {
+      nextErrors.parentName = "Ingresa el nombre del padre o madre.";
+    }
+
+    if (!parentEmail) {
+      nextErrors.parentEmail = "Ingresa el email.";
+    } else if (!BASIC_EMAIL_PATTERN.test(parentEmail)) {
+      nextErrors.parentEmail = "Ingresa un email válido.";
+    } else if (hasLocalParentInvitationForEmail(kidId, parentEmail, localParentInvitations)) {
+      nextErrors.parentEmail = "Ya existe una invitación pendiente para este email.";
+    }
+
+    if (!form.relationship) {
+      nextErrors.relationship = "Selecciona un parentesco.";
+    }
+
+    setErrors(nextErrors);
+
+    return Object.keys(nextErrors).length === 0;
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    validateForm();
   }
 
   const profileHref = kidId ? `/kids/${kidId}` : "/kids";
@@ -103,6 +184,15 @@ export default function LinkParentPage() {
         </header>
 
         <form className="px-5 py-[22px] min-[420px]:px-[26px]" noValidate onSubmit={handleSubmit}>
+          {hasErrors ? (
+            <div
+              role="alert"
+              className="mb-[18px] rounded-[14px] border border-[#F4B5A6] bg-[#FDE3DC] px-4 py-3 text-[13px] font-bold text-[#B94734]"
+            >
+              {errors.form ?? "Revisa los campos marcados antes de enviar."}
+            </div>
+          ) : null}
+
           <div className="mb-5 flex gap-[11px] rounded-[14px] bg-[#E3ECFB] px-4 py-[13px]">
             <svg
               width="20"
@@ -134,8 +224,15 @@ export default function LinkParentPage() {
               value={form.parentName}
               onChange={(event) => updateField("parentName", event.target.value)}
               placeholder="Ej. Diego Fernández"
-              className="w-full rounded-[14px] border-[1.5px] border-[#EADFD0] bg-white px-4 py-[13px] text-[15px] text-[#3F362E] placeholder:text-[#B6A99B] focus:border-[#F2937A] focus:outline-none"
+              aria-invalid={Boolean(errors.parentName)}
+              aria-describedby={errors.parentName ? "parentNameError" : undefined}
+              className={getFieldClassName(Boolean(errors.parentName))}
             />
+            {errors.parentName ? (
+              <p id="parentNameError" className="mt-2 text-[12px] font-bold text-[#D9583C]">
+                {errors.parentName}
+              </p>
+            ) : null}
           </div>
 
           <div className="mb-[18px]">
@@ -149,8 +246,15 @@ export default function LinkParentPage() {
               value={form.parentEmail}
               onChange={(event) => updateField("parentEmail", event.target.value)}
               placeholder="correo@ejemplo.com"
-              className="w-full rounded-[14px] border-[1.5px] border-[#EADFD0] bg-white px-4 py-[13px] text-[15px] text-[#3F362E] placeholder:text-[#B6A99B] focus:border-[#F2937A] focus:outline-none"
+              aria-invalid={Boolean(errors.parentEmail)}
+              aria-describedby={errors.parentEmail ? "parentEmailError" : undefined}
+              className={getFieldClassName(Boolean(errors.parentEmail))}
             />
+            {errors.parentEmail ? (
+              <p id="parentEmailError" className="mt-2 text-[12px] font-bold text-[#D9583C]">
+                {errors.parentEmail}
+              </p>
+            ) : null}
           </div>
 
           <fieldset className="mb-5">
@@ -178,6 +282,9 @@ export default function LinkParentPage() {
                 );
               })}
             </div>
+            {errors.relationship ? (
+              <p className="mt-2 text-[12px] font-bold text-[#D9583C]">{errors.relationship}</p>
+            ) : null}
           </fieldset>
 
           <div className="mb-5 rounded-[16px] border-[1.5px] border-dashed border-[#E6D08A] bg-[#FBF1D6] p-[18px] text-center">
@@ -185,7 +292,7 @@ export default function LinkParentPage() {
               CÓDIGO DE INVITACIÓN
             </div>
             <div className="font-fredoka text-[34px] leading-tight font-semibold tracking-[7px] text-[#8A7234]">
-              {PREVIEW_INVITATION_CODE}
+              {invitationCode}
             </div>
             <div className="mt-1.5 text-[13px] text-[#A88526]">Vence en 7 días</div>
           </div>
