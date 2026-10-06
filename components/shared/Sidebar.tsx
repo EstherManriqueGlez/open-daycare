@@ -64,14 +64,13 @@ export function SidebarContent() {
         </div>
       </Link>
 
-      <button
-        type="button"
-        disabled
-        className="mb-[18px] flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-[14px] bg-linear-180 from-[#F4977E] to-[#EE8164] px-3 py-3 text-[14.5px] font-extrabold text-white shadow-[0_8px_18px_-8px_rgba(238,129,100,0.75)]"
+      <Link
+        href="/posts/new"
+        className="mb-[18px] flex w-full items-center justify-center gap-2 rounded-[14px] bg-linear-180 from-[#F4977E] to-[#EE8164] px-3 py-3 text-[14.5px] font-extrabold text-white shadow-[0_8px_18px_-8px_rgba(238,129,100,0.75)]"
       >
         <PlusIcon />
         Nueva publicación
-      </button>
+      </Link>
 
       <nav className="flex flex-1 flex-col gap-1">
         {navItems.map((item) => (

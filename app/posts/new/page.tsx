@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, useSyncExternalStore } from "react";
 
 import {
@@ -9,6 +10,7 @@ import {
 } from "@/app/_data/localKids";
 import type { NewPostAudience } from "@/app/_data/localFeedPosts";
 import type { NewPostType } from "@/app/_data/localFeedPosts";
+import { createLocalFeedPost, saveLocalFeedPost } from "@/app/_data/localFeedPosts";
 import {
   buildNewPostAudienceOptions,
   getDefaultNewPostAudience,
@@ -177,6 +179,7 @@ function TypeChip({
 }
 
 export default function NewPostPage() {
+  const router = useRouter();
   const localKidsSnapshot = useSyncExternalStore(subscribeToLocalKids, getLocalKidsSnapshot, () => "");
   const audienceOptions = buildNewPostAudienceOptions(parseLocalKidsStorageValue(localKidsSnapshot));
   const [selectedAudience, setSelectedAudience] = useState<NewPostAudience>(() =>
@@ -184,6 +187,28 @@ export default function NewPostPage() {
   );
   const [selectedType, setSelectedType] = useState<NewPostType>("food");
   const [description, setDescription] = useState(INITIAL_DESCRIPTION);
+  const [error, setError] = useState("");
+
+  function handlePublish() {
+    if (!selectedType) {
+      setError("Seleccioná un tipo de publicación.");
+      return;
+    }
+
+    if (!description.trim()) {
+      setError("Escribí una descripción antes de publicar.");
+      return;
+    }
+
+    saveLocalFeedPost(
+      createLocalFeedPost({
+        selectedAudience,
+        selectedType,
+        description,
+      }),
+    );
+    router.push("/");
+  }
 
   return (
     <main className="flex min-h-screen items-start justify-center bg-[#F6ECDF] px-4 py-8 sm:px-6 sm:py-10">
@@ -195,7 +220,11 @@ export default function NewPostPage() {
           <h1 className="font-fredoka text-[18px] font-semibold text-[#3F362E]">
             Nueva publicación
           </h1>
-          <button type="button" className="text-[15px] font-extrabold text-[#D9583C]">
+          <button
+            type="button"
+            onClick={handlePublish}
+            className="text-[15px] font-extrabold text-[#D9583C]"
+          >
             Publicar
           </button>
         </header>
@@ -238,10 +267,19 @@ export default function NewPostPage() {
           <textarea
             id="post-description"
             value={description}
-            onChange={(event) => setDescription(event.target.value)}
+            onChange={(event) => {
+              setDescription(event.target.value);
+              setError("");
+            }}
             placeholder="Contá cómo le fue hoy…"
             className="mb-[22px] min-h-[120px] w-full resize-y rounded-[14px] border-[1.5px] border-[#EADFD0] bg-white px-4 py-3.5 text-[15px] leading-[1.5] text-[#3F362E] placeholder:text-[#B6A99B] focus:outline-none"
           />
+
+          {error ? (
+            <div className="-mt-3 mb-[22px] rounded-[12px] border border-[#F2B7A6] bg-[#FBE3D8] px-3.5 py-2.5 text-[13.5px] font-bold text-[#C5503A]">
+              {error}
+            </div>
+          ) : null}
 
           <div className="mb-2.5 text-[12px] font-extrabold tracking-[0.7px] text-[#94887B]">
             FOTOS
