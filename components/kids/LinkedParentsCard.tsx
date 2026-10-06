@@ -1,6 +1,18 @@
+"use client";
+
+import Link from "next/link";
+import { useSyncExternalStore } from "react";
+
+import {
+  getLocalParentInvitationsForKid,
+  LOCAL_PARENT_INVITATIONS_STORAGE_KEY,
+  mapLocalParentInvitationToLinkedParent,
+  parseLocalParentInvitationsStorageValue,
+} from "@/app/_data/localParentInvitations";
 import type { Kid, LinkedParent } from "@/app/_data/mock";
 
 interface LinkedParentsCardProps {
+  kidId: string;
   parents: Kid["linkedParents"];
 }
 
@@ -9,14 +21,45 @@ const STATUS_CLASSES: Record<LinkedParent["statusLabel"], string> = {
   PENDIENTE: "bg-[#F7E7A6] text-[#9A7B1E]",
 };
 
-export function LinkedParentsCard({ parents }: LinkedParentsCardProps) {
+function getLocalParentInvitationsSnapshot() {
+  if (typeof window === "undefined") {
+    return "";
+  }
+
+  return window.localStorage.getItem(LOCAL_PARENT_INVITATIONS_STORAGE_KEY) ?? "";
+}
+
+function subscribeToLocalParentInvitations(onStoreChange: () => void) {
+  function handleStorage(event: StorageEvent) {
+    if (event.key === LOCAL_PARENT_INVITATIONS_STORAGE_KEY) {
+      onStoreChange();
+    }
+  }
+
+  window.addEventListener("storage", handleStorage);
+
+  return () => window.removeEventListener("storage", handleStorage);
+}
+
+export function LinkedParentsCard({ kidId, parents }: LinkedParentsCardProps) {
+  const localParentInvitationsSnapshot = useSyncExternalStore(
+    subscribeToLocalParentInvitations,
+    getLocalParentInvitationsSnapshot,
+    () => "",
+  );
+  const pendingParents = getLocalParentInvitationsForKid(
+    kidId,
+    parseLocalParentInvitationsStorageValue(localParentInvitationsSnapshot),
+  ).map(mapLocalParentInvitationToLinkedParent);
+  const visibleParents = [...parents, ...pendingParents];
+
   return (
     <div className="rounded-[16px] border border-[#ECE0D0] bg-[#FFFDF9] px-[18px] py-4">
       <div className="mb-[14px] text-[12.5px] font-extrabold tracking-[0.8px] text-[#8A7C6D]">
         PADRES VINCULADOS
       </div>
       <div className="flex flex-col gap-[14px]">
-        {parents.map((parent) => (
+        {visibleParents.map((parent) => (
           <div key={parent.id} className="flex flex-wrap items-center gap-3">
             <div
               className="flex h-10 w-10 flex-none items-center justify-center rounded-full font-fredoka text-[16px] font-semibold text-white"
@@ -40,11 +83,9 @@ export function LinkedParentsCard({ parents }: LinkedParentsCardProps) {
           </div>
         ))}
 
-        <button
-          type="button"
-          disabled
-          aria-disabled="true"
-          className="flex cursor-not-allowed items-center gap-3 pt-2 text-left"
+        <Link
+          href={`/kids/${kidId}/link-parent`}
+          className="flex items-center gap-3 pt-2 text-left"
         >
           <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full border-[1.5px] border-dashed border-[#D8CBBA] text-[#B0A290]">
             <svg
@@ -64,7 +105,7 @@ export function LinkedParentsCard({ parents }: LinkedParentsCardProps) {
           <span className="text-[14.5px] font-extrabold text-[#C5503A]">
             Vincular otro padre
           </span>
-        </button>
+        </Link>
       </div>
     </div>
   );

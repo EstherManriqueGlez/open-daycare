@@ -70,7 +70,7 @@ export function KidProfileLocalResolver({ id }: KidProfileLocalResolverProps) {
 
       <div className="flex w-full flex-none flex-col gap-[14px] lg:w-[300px]">
         <KidProfileActions />
-        <LinkedParentsCard parents={kid.linkedParents} />
+        <LinkedParentsCard kidId={kid.id} parents={kid.linkedParents} />
       </div>
     </div>
   );
