@@ -11,6 +11,7 @@ import {
   generateInvitationCode,
   hasLocalParentInvitationForEmail,
   LOCAL_PARENT_INVITATIONS_STORAGE_KEY,
+  normalizeParentEmail,
   parseLocalParentInvitationsStorageValue,
   saveLocalParentInvitation,
 } from "@/app/_data/localParentInvitations";
@@ -81,6 +82,14 @@ function getFieldClassName(hasError: boolean) {
   }`;
 }
 
+function hasLinkedParentForEmail(parentEmail: string, linkedParents: NonNullable<ReturnType<typeof findMockKidById>>["linkedParents"]) {
+  const normalizedEmail = normalizeParentEmail(parentEmail);
+
+  return linkedParents.some(
+    (parent) => parent.parentEmail && normalizeParentEmail(parent.parentEmail) === normalizedEmail,
+  );
+}
+
 export default function LinkParentPage() {
   const router = useRouter();
   const params = useParams<{ id?: string | string[] }>();
@@ -131,6 +140,8 @@ export default function LinkParentPage() {
       nextErrors.parentEmail = "Ingresa el email.";
     } else if (!BASIC_EMAIL_PATTERN.test(parentEmail)) {
       nextErrors.parentEmail = "Ingresa un email válido.";
+    } else if (kid && hasLinkedParentForEmail(parentEmail, kid.linkedParents)) {
+      nextErrors.parentEmail = "Ya existe un padre vinculado con este email.";
     } else if (hasLocalParentInvitationForEmail(kidId, parentEmail, localParentInvitations)) {
       nextErrors.parentEmail = "Ya existe una invitación pendiente para este email.";
     }

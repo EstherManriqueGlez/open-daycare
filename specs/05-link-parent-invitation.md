@@ -1,6 +1,6 @@
 # SPEC 05 — Link parent invitation
 
-> **Estado:** Approved
+> **Estado:** Implemented
 > **Depende de:** SPEC 02, SPEC 04
 > **Fecha:** 2026-10-05
 > **Objetivo:** Implementar el flujo modal `/kids/[id]/link-parent` para invitar y vincular un padre a un niño, fiel a `references/pantallas/vincular-padre.dc.html`, usando persistencia local.
@@ -91,26 +91,26 @@ Convenciones:
 
 ## Acceptance criteria
 
-- [ ] `/kids/[id]/link-parent` renderiza una card/modal centrada visualmente fiel a `references/pantallas/vincular-padre.dc.html`.
-- [ ] La ruta no renderiza `Sidebar`, `MobileNav` ni el layout completo del perfil del niño.
-- [ ] La card usa fondo cálido, tarjeta `#FBF4EC`, borde `#ECE0D0`, radio `24px`, sombra, tipografía Fredoka/Nunito y spacing equivalente a la referencia.
-- [ ] El header muestra `Vincular padre` y el subtítulo `a {nombre del niño}` con el niño resuelto por `id`.
-- [ ] El botón cerrar navega a `/kids/[id]` sin guardar datos.
-- [ ] El formulario permite editar nombre, email y parentesco mediante estado local.
-- [ ] `Mamá` aparece seleccionado por defecto.
-- [ ] El selector de parentesco permite exactamente una opción entre `Mamá`, `Papá` y `Tutor/a`.
-- [ ] `Enviar invitación` valida nombre, email y parentesco antes de guardar.
-- [ ] El email muestra error si no cumple formato básico.
-- [ ] Si ya existe un padre o invitación local con el mismo email para ese niño, se muestra error y no se guarda duplicado.
-- [ ] Al enviar datos válidos, se crea una `LocalParentInvitation` en `localStorage` bajo `open-daycare:parent-invitations:v1`.
-- [ ] El código generado tiene 5 caracteres alfanuméricos en mayúsculas y se muestra con tratamiento visual equivalente al bloque `CÓDIGO DE INVITACIÓN` de la referencia.
-- [ ] Después de guardar, la app navega a `/kids/[id]`.
-- [ ] En `/kids/[id]`, la invitación guardada aparece en `PADRES VINCULADOS` con estado `PENDIENTE`.
-- [ ] El botón `Vincular otro padre` del perfil navega a `/kids/[id]/link-parent`.
-- [ ] El flujo funciona para niños mock y para niños creados localmente en SPEC 04.
-- [ ] En mobile, la card/modal no genera overflow horizontal y conserva jerarquía visual legible.
-- [ ] `npm run lint` termina sin errores.
-- [ ] `npx tsc --noEmit` termina sin errores.
+- [x] `/kids/[id]/link-parent` renderiza una card/modal centrada visualmente fiel a `references/pantallas/vincular-padre.dc.html`.
+- [x] La ruta no renderiza `Sidebar`, `MobileNav` ni el layout completo del perfil del niño.
+- [x] La card usa fondo cálido, tarjeta `#FBF4EC`, borde `#ECE0D0`, radio `24px`, sombra, tipografía Fredoka/Nunito y spacing equivalente a la referencia.
+- [x] El header muestra `Vincular padre` y el subtítulo `a {nombre del niño}` con el niño resuelto por `id`.
+- [x] El botón cerrar navega a `/kids/[id]` sin guardar datos.
+- [x] El formulario permite editar nombre, email y parentesco mediante estado local.
+- [x] `Mamá` aparece seleccionado por defecto.
+- [x] El selector de parentesco permite exactamente una opción entre `Mamá`, `Papá` y `Tutor/a`.
+- [x] `Enviar invitación` valida nombre, email y parentesco antes de guardar.
+- [x] El email muestra error si no cumple formato básico.
+- [x] Si ya existe un padre o invitación local con el mismo email para ese niño, se muestra error y no se guarda duplicado.
+- [x] Al enviar datos válidos, se crea una `LocalParentInvitation` en `localStorage` bajo `open-daycare:parent-invitations:v1`.
+- [x] El código generado tiene 5 caracteres alfanuméricos en mayúsculas y se muestra con tratamiento visual equivalente al bloque `CÓDIGO DE INVITACIÓN` de la referencia.
+- [x] Después de guardar, la app navega a `/kids/[id]`.
+- [x] En `/kids/[id]`, la invitación guardada aparece en `PADRES VINCULADOS` con estado `PENDIENTE`.
+- [x] El botón `Vincular otro padre` del perfil navega a `/kids/[id]/link-parent`.
+- [x] El flujo funciona para niños mock y para niños creados localmente en SPEC 04.
+- [x] En mobile, la card/modal no genera overflow horizontal y conserva jerarquía visual legible.
+- [x] `npm run lint` termina sin errores.
+- [x] `npx tsc --noEmit` termina sin errores.
 
 ## Decisions
 
